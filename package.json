@@ -1,0 +1,25 @@
+{
+  "name": "dgb-node-server",
+  "version": "1.0.0",
+  "description": "various dgb services",
+  "main": "index.js",
+  "scripts": {
+    "test": "snyk test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "none"
+  },
+  "keywords": [
+    "server",
+    "dgb"
+  ],
+  "author": "TBIT",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3",
+    "helmet": "^3.13.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5",
+  }
+}
