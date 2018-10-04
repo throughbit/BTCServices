@@ -121,7 +121,7 @@ app.post('/tx_detail', async (req,res)=>{
    await rp(options)
    .then((resp)=>{
     let response = errorSet.errorFunc('success',resp.result);
-    res.send(response.message);
+    res.send(response);
     })
    .catch((err)=>{
    if(err.cause){
@@ -167,7 +167,7 @@ function raw_tx(txid){
     await rp(options)
     .then((resp)=>{
      let response = errorSet.errorFunc('success',resp.result);
-     resolve(response);
+     resolve(response.message);
     }).catch((err)=>{
      if(err.cause){
       let response = errorSet.errorFunc("fail",err.cause);
