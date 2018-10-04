@@ -124,7 +124,18 @@ app.post('/tx_detail', async (req,res)=>{
     res.send(response);
     })
    .catch((err)=>{
-    throw err;
+    if(err.cause){
+    let response = errorSet.errorFunc("fail",err.cause);
+    res.send(response);
+   }
+   if(err.error.error.message){
+    let response = errorSet.errorFunc("fail",err.error.error.message);
+    res.send(response);
+   }
+   else{
+    let response = errorSet.errorFunc("fail",err);
+    res.send(response);
+   }
     })
   })
   .catch((err)=>{
