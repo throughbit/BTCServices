@@ -121,7 +121,7 @@ app.post('/tx_detail', async (req,res)=>{
    await rp(options)
    .then((resp)=>{
     let response = errorSet.errorFunc('success',resp.result);
-    res.send(response);
+    res.send(response.message);
     })
    .catch((err)=>{
    if(err.cause){
