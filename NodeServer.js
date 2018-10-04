@@ -115,38 +115,46 @@ app.post('/tx_detail', async (req,res)=>{
  try{
   raw_tx(req.body.txid)
   .then(async (hex)=>{
-   options.body.method = decoderawtransaction;
+   options.body.method = 'decoderawtransaction';
    options.body.params = [];
    options.body.params.push(hex);
    await rp(options)
    .then((resp)=>{
+    console.log("RESPRESULT:",resp.result);
     let response = errorSet.errorFunc('success',resp.result);
-    res.send(response);
+    console.log("RESPONSE",response);
+     res.send(response);
     })
    .catch((err)=>{
    if(err.cause){
+console.log("errcause",err.cause);
     let response = errorSet.errorFunc("fail",err.cause);
     res.send(response);
    }
    else if(err.error){
+console.log("errerrror",err.error);
     let response = errorSet.errorFunc("fail",err.error.error.message);
     res.send(response);
    }
    else{
+console.log("generalerr", err);
     let response = errorSet.errorFunc("fail",err);
     res.send(response);
    }
   })})
   .catch((err)=>{
    if(err.cause){
+console.log("errcause2",err.cause);
     let response = errorSet.errorFunc("fail",err.cause);
     res.send(response);
    }
    else if(err.error){
+console.log("errerrror2",err.error);
     let response = errorSet.errorFunc("fail",err.error.error.message);
     res.send(response);
    }
    else{
+console.log("generalerr2", err);
     let response = errorSet.errorFunc("fail",err);
     res.send(response);
    }
@@ -161,24 +169,29 @@ app.post('/tx_detail', async (req,res)=>{
 function raw_tx(txid){
  return new Promise(async (resolve,reject)=>{
   try{
-    options.body.method = getrawtransaction;
+    options.body.method = 'getrawtransaction';
     options.body.params = [];
     options.body.params.push(txid);
     await rp(options)
     .then((resp)=>{
+      console.log("RESPRESULT",resp.result);
      let response = errorSet.errorFunc('success',resp.result);
+      console.log("RESPONSE", response);
      resolve(response.message);
     }).catch((err)=>{
      if(err.cause){
+console.log("errcause", err.cause);
       let response = errorSet.errorFunc("fail",err.cause);
       reject(response);
      }
      if(err.error){
+console.log("errerror3", err.error);
       let response = errorSet.errorFunc("fail",err.error.error.message);
       reject(response);
      }
      else{
-      let response = errorSet.errorFunc("fail",err);
+ console.log("generalerr3", err);
+     let response = errorSet.errorFunc("fail",err);
       reject(response);
      }
     });
