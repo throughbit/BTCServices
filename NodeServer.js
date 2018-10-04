@@ -123,7 +123,20 @@ app.post('/tx_detail', async (req,res)=>{
     let response = errorSet.errorFunc('success',resp.result);
     res.send(response);
     })
-  })
+   .catch((err)=>{
+   if(err.cause){
+    let response = errorSet.errorFunc("fail",err.cause);
+    res.send(response);
+   }
+   else if(err.error.error.message){
+    let response = errorSet.errorFunc("fail",err.error.error.message);
+    res.send(response);
+   }
+   else{
+    let response = errorSet.errorFunc("fail",err);
+    res.send(response);
+   }
+  })})
   .catch((err)=>{
    if(err.cause){
     let response = errorSet.errorFunc("fail",err.cause);
