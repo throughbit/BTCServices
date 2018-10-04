@@ -60,7 +60,7 @@ app.post('/get_utxo', async (req,res)=>{
      let response = errorSet.errorFunc("fail",err.cause);
      res.send(response);
      }
-    if(err.error.error.message){
+    if(err.error){
      let response = errorSet.errorFunc("fail",err.error.error.message);
      res.send(response);
     }
@@ -94,7 +94,7 @@ console.log(options);
      let response = errorSet.errorFunc("fail",err.cause);
      res.send(response);
     }
-    if(err.error.error.message){
+    if(err.error){
      let response = errorSet.errorFunc("fail",err.error.error.message);
      res.send(response);
     }
@@ -128,7 +128,7 @@ app.post('/tx_detail', async (req,res)=>{
     let response = errorSet.errorFunc("fail",err.cause);
     res.send(response);
    }
-   else if(err.error.error.message){
+   else if(err.error){
     let response = errorSet.errorFunc("fail",err.error.error.message);
     res.send(response);
    }
@@ -142,7 +142,7 @@ app.post('/tx_detail', async (req,res)=>{
     let response = errorSet.errorFunc("fail",err.cause);
     res.send(response);
    }
-   else if(err.error.error.message){
+   else if(err.error){
     let response = errorSet.errorFunc("fail",err.error.error.message);
     res.send(response);
    }
@@ -173,7 +173,7 @@ function raw_tx(txid){
       let response = errorSet.errorFunc("fail",err.cause);
       reject(response);
      }
-     if(err.error.error.message){
+     if(err.error){
       let response = errorSet.errorFunc("fail",err.error.error.message);
       reject(response);
      }
@@ -208,7 +208,7 @@ app.post('/broadcastx', async (req,res)=>{
      let response = errorSet.errorFunc('fail',err.cause);
      res.send(response);
      }
-    if(err.error.error.message){
+    if(err.error){
      let response = errorSet.errorFunc('fail',err.error.error.message);
      res.send(response);
     }
