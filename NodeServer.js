@@ -113,24 +113,20 @@ console.log(options);
 //-o_o===TxDetail==================================================|
 app.post('/tx_detail', async (req,res)=>{
  try{
-  options.body.id = 'GetTransaction';
-  options.body.method = 'gettransaction';
-  let regex = new RegExp(/[a-zA-Z0-9]{64}/);
-  let txid = req.body.txid;
-  if(regex.test(txid)) options.body.params.push(txid);
-  else res.send(errorSet.errorFunc("fail","Invalid TxId"));
-
-  await rp(options)
+  raw_tx(req.body.txid)
+  .then((hex)=>{
+   options.body.method = decoderawtransaction;
+   options.body.params = [];
+   options.body.params.push(hex);
+   await rp(options)
    .then((resp)=>{
-    //console.log(resp.result);
-    let response = errorSet.errorFunc("success",resp.result);
+    let response = errorSet.errorFunc('success',resp.result);
     res.send(response);
-   })
-   .catch((err)=>{
+   }).catch((err)=>{
     if(err.cause){
      let response = errorSet.errorFunc("fail",err.cause);
      res.send(response);
-     }
+    }
     if(err.error.error.message){
      let response = errorSet.errorFunc("fail",err.error.error.message);
      res.send(response);
@@ -140,12 +136,44 @@ app.post('/tx_detail', async (req,res)=>{
      res.send(response);
     }
    });
- }
+  }
  catch(e){
-   let response = errorSet.errorFunc("fail",e.message);
-   res.send(response);
- }
-});
+  let response = errorSet.errorFunc('fail', e);
+  res.send(response);
+ }  
+}
+//-o_o===RawTx--=================================================+=|
+function raw_tx(txid){
+ return new Promise((resolve,reject)=>{
+  try{
+    options.body.method = getrawtransaction;
+    options.body.params = [];
+    options.body.params.push(txid);
+    await rp(options)
+    .then((resp)=>{
+     let response = errorSet.errorFunc('success',resp.result);
+     resolve(response);
+    }).catch((err)=>{
+     if(err.cause){
+      let response = errorSet.errorFunc("fail",err.cause);
+      reject(response);
+     }
+     if(err.error.error.message){
+      let response = errorSet.errorFunc("fail",err.error.error.message);
+      reject(response);
+     }
+     else{
+      let response = errorSet.errorFunc("fail",err);
+      reject(response);
+     }
+    });
+   }
+  catch(e){
+   let response = errorSet.errorFunc('fail', e);
+   reject(response);
+  }
+ });
+}
 //-o_o===Broadcast=================================================|
 app.post('/broadcastx', async (req,res)=>{
  try{
