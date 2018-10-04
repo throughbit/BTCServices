@@ -114,7 +114,7 @@ console.log(options);
 app.post('/tx_detail', async (req,res)=>{
  try{
   raw_tx(req.body.txid)
-  .then((hex)=>{
+  .then(async (hex)=>{
    options.body.method = decoderawtransaction;
    options.body.params = [];
    options.body.params.push(hex);
@@ -122,29 +122,34 @@ app.post('/tx_detail', async (req,res)=>{
    .then((resp)=>{
     let response = errorSet.errorFunc('success',resp.result);
     res.send(response);
-   }).catch((err)=>{
-    if(err.cause){
-     let response = errorSet.errorFunc("fail",err.cause);
-     res.send(response);
-    }
-    if(err.error.error.message){
-     let response = errorSet.errorFunc("fail",err.error.error.message);
-     res.send(response);
-    }
-    else{
-     let response = errorSet.errorFunc("fail",err);
-     res.send(response);
-    }
-   });
-  }
+    })
+   .catch((err)=>{
+    throw err;
+    })
+  })
+  .catch((err)=>{
+   if(err.cause){
+    let response = errorSet.errorFunc("fail",err.cause);
+    res.send(response);
+   }
+   if(err.error.error.message){
+    let response = errorSet.errorFunc("fail",err.error.error.message);
+    res.send(response);
+   }
+   else{
+    let response = errorSet.errorFunc("fail",err);
+    res.send(response);
+   }
+  });
+ }
  catch(e){
   let response = errorSet.errorFunc('fail', e);
   res.send(response);
- }  
-}
+ }
+});
 //-o_o===RawTx--=================================================+=|
 function raw_tx(txid){
- return new Promise((resolve,reject)=>{
+ return new Promise(async (resolve,reject)=>{
   try{
     options.body.method = getrawtransaction;
     options.body.params = [];
