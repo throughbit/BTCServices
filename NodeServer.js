@@ -5,7 +5,7 @@ Digibyte node server
 //-o_O============================================================~|
 'use strict';
 //-o_o===modules===================================================|
-const digibyte = require('digibyte');
+//const digibyte = require('digibyte');
 var errorSet = require('./errors.js');
 var express = require('express');
 var helmet = require('helmet');
@@ -14,7 +14,7 @@ var rp = require ('request-promise-native');
 //-o_o===init======================================================|
 const S_PORT = process.env.SERV;
 const NODE_PORT = process.env.NODE;
-const RPC_AUTH = process.env.RPC;
+const RPC_AUTH = process.env.RPC_AUTH;
 const digiurl = `http://localhost:${NODE_PORT}`;
 var app = express();
 
@@ -23,7 +23,7 @@ app.use(helmet.noCache());
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}));
 
-var addresses = ['DJ6FfMCxdUC6vAYvN9yJNd5Quok8AYW9PR'];
+var addresses = ["DJ6FfMCxdUC6vAYvN9yJNd5Quok8AYW9PR"];
 
 var options = {
  method: 'POST',
@@ -47,69 +47,67 @@ app.post('/get_utxo', async (req,res)=>{
  try{
   options.body.id = 'GetUTxO';
   options.body.method = 'listunspent';
-  options.body.params = [6,9999999,addresses];
+  options.body.params = [6,99999,addresses];
+  console.log(JSON.stringify(options));
   await rp(options)
    .then((resp)=>{
-    //console.log(resp.result);
-    let response = errorSet.errorFunc("success","UTxOSet Delivered");
-    res.send(response, res.result);
+    console.log(resp.result);
+    let response = errorSet.errorFunc("success",resp.result);
+    res.send(response);
    })
    .catch((err)=>{
-    if(err.statusCode==401){
-     console.log("Error: RPC Authorization failure");
-     res.status(401).send({"code":401,"message":"Authorization failure"});
-    }
     if(err.cause){
-     if(err.cause.code==="ECONNREFUSED"){
-     console.log("Error: Daemon not running");
-     res.status(500).send({"err":"Daemon not running"});
+     let response = errorSet.errorFunc("fail",err.cause);
+     res.send(response);
      }
+    if(err.error.error.message){
+     let response = errorSet.errorFunc("fail",err.error.error.message);
+     res.send(response);
     }
     else{
-     console.log(err.error.error.message);
+     let response = errorSet.errorFunc("fail",err);
+     res.send(response);
     }
    });
  }
  catch(e){
-   let reponse = errorSet.errorFunc("fail","fcatch");
-   console.log({Failed:response,Specification:e});
-   res.send({Failed:response,Specification:e});
-   return ({Failed:response,Specification:e});
+   let response = errorSet.errorFunc("fail",e);
+   console.log(response);
+   res.send(response);
  }
 });
 //-o_o===AddressGen================================================|
 app.post('/new_address', async (req,res)=>{
- console.log('imin');
  try{
   options.body.id = 'NewAddress';
   options.body.method = 'getnewaddress';
+  options.body.params = [];
+console.log(options);
   await rp(options)
    .then((resp)=>{
     //console.log(resp.result);
-    let response = errorSet.errorFunc("success","UTxOSet Delivered");
-    res.send(response,resp.result);
+    let response = errorSet.errorFunc("success",resp.result);
+    res.send(response);
    })
    .catch((err)=>{
-    if(err.statusCode==401){
-     console.log("Error: RPC Authorization failure");
-     res.status(401).send({"code":401,"message":"Authorization failure"});
-    }
     if(err.cause){
-     if(err.cause.code==="ECONNREFUSED"){
-     console.log("Error: Daemon not running");
-     res.status(500).send({"err":"Daemon not running"});
-     }
+     let response = errorSet.errorFunc("fail",err.cause);
+     res.send(response);
+    }
+    if(err.error.error.message){
+     let response = errorSet.errorFunc("fail",err.error.error.message);
+     res.send(response);
     }
     else{
-     console.log(err.error.error.message);
+     let response = errorSet.errorFunc("fail",err);
+     res.send(response);
     }
    });
  }
  catch(e){
-   let reponse = errorSet.errorFunc("fail","fcatch");
-   console.log({Failed:response,Specification:e});
-   res.send({Failed:response,Specification:e});
-   return ({Failed:response,Specification:e});
+   let response = errorSet.errorFunc("fail",e);
+   console.log(response);
+   res.send(response);
  }
 });
 //-o_o===TxDetail==================================================|
@@ -125,29 +123,27 @@ app.post('/tx_detail', async (req,res)=>{
   await rp(options)
    .then((resp)=>{
     //console.log(resp.result);
-    let response = errorSet.errorFunc("success","UTxOSet Delivered");
-    res.send( resp.result);
+    let response = errorSet.errorFunc("success",resp.result);
+    res.send(response);
    })
    .catch((err)=>{
-    if(err.statusCode==401){
-     let response = errorSet.errorFunc("fail","Error: RPC Authorization failure");
-     res.status(401).send(response,{"code":401,"message":"Authorization failure"});
-    }
     if(err.cause){
-     if(err.cause.code==="ECONNREFUSED"){
-     let response = errorSet.errorFunc("fail","Error: Daemon not running");
-     res.status(500).send(response,{"err":"Daemon not running"});
+     let response = errorSet.errorFunc("fail",err.cause);
+     res.send(response);
      }
+    if(err.error.error.message){
+     let response = errorSet.errorFunc("fail",err.error.error.message);
+     res.send(response);
     }
     else{
-     let response = errorSet.errorFunc("fail",err.error.error.message);
+     let response = errorSet.errorFunc("fail",err);
      res.send(response);
     }
    });
  }
  catch(e){
-   let response = errorSet.errorFunc("fail","fcatch");
-   res.send({Failed:response,Specification:e});
+   let response = errorSet.errorFunc("fail",e.message);
+   res.send(response);
  }
 });
 //-o_o===Broadcast=================================================|
@@ -155,9 +151,8 @@ app.post('/broadcastx', async (req,res)=>{
  try{
   options.body.id='BroadcastTx';
   options.body.method='sendrawtransaction';
-  let parameters = [];
-  parameters.push(req.body.hex);
-  options.body.params = parameters;
+  options.body.params = [];
+  options.body.params.push(req.body.hex);
 
   console.log(options);
   await rp(options)
@@ -166,26 +161,24 @@ app.post('/broadcastx', async (req,res)=>{
     res.send(resp);
    })
    .catch((err)=>{
-    if(err.statusCode==401){
-     console.log("Error: RPC Authorization failure");
-     res.status(401).send({"code":401,"message":"Authorization failure"});
-    }
     if(err.cause){
-     if(err.cause.code==="ECONNREFUSED"){
-     console.log("Error: Daemon not running");
-     res.status(500).send({"err":"Daemon not running"});
+     let response = errorSet.errorFunc('fail',err.cause);
+     res.send(response);
      }
+    if(err.error.error.message){
+     let response = errorSet.errorFunc('fail',err.error.error.message);
+     res.send(response);
     }
     else{
-     console.log(err.error.error.message);
-     res.status(500).send({"code":err.error.error.code,"message":err.error.error.message});
+     let response = errorSet.errorFunc('fail',err);
+     res.send(response);
     }
    });
  }
  catch(e){
-   fail_response.message = fail.fcatch;
-   console.log(fail_response,e);
-   res.send(fail_response,e);
+   let response = errorSet.errorFunc('fail',e);
+   console.log(response);
+   res.send(response);
  }
 });
 //-o_o===CONNECT===================================================|
