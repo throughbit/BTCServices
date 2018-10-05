@@ -30,7 +30,7 @@ const txid = '18f78b4c8eb87938bb7bc06585f2edb879ae7bc6e971a79ff2c92144edaf18aa '
 var rec_set = {
  "txid":'',
  "confirmations":'',
- "receives":[{"address":'', "amount":''}]
+ "receives":[]
 }
 //-o_o===node-update======================================================|
 app.post('/node-update', async (req,res)=>{
@@ -86,14 +86,14 @@ return new Promise((resolve,reject)=>{
 function tx_parse(data){
  return new Promise((resolve,reject)=>{
   try{
-   console.log(data.message.details);
     rec_set.txid = data.message.txid;
     rec_set.confirmations = data.message.confirmations;
     rec_set.receives = data.message.details.map(async function(obj){
      return {"address":obj[address], "amount":obj[amount]};
     })
-    .then(()=>resolve(rec_set))
-    .catch(e=>reject(e));
+    Promises.all(rec_set.receives)
+    .then(()=> resolve(rec_set))
+    .catch((e)=>reject(e));
   } 
   catch(e){
    reject(e);
