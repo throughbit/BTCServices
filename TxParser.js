@@ -66,7 +66,7 @@ return new Promise((resolve,reject)=>{
   //  console.log("RESPONSE",response);
     tx_parse(JSON.parse(body))
     .then(responso=>{
-     resolve(responso);
+     resolve(JSON.stringify(responso));
     })
     .catch(err=>{
      console.log(err);
@@ -84,7 +84,7 @@ return new Promise((resolve,reject)=>{
 //-o_o===tx-parse================================================|
 
 function tx_parse(data){
- return new Promise((resolve,reject)=>{
+ return new Promise(async (resolve,reject)=>{
   try{
     rec_set.txid = data.message.txid;
     rec_set.confirmations = data.message.confirmations;
@@ -93,7 +93,7 @@ function tx_parse(data){
      console.log(receives);
      return JSON.stringify(receives);
     })
-    Promise.all(rec_set.receives)
+    await Promise.all(rec_set.receives)
     .then(()=> resolve(rec_set))
     .catch((e)=>reject(e));
   } 
