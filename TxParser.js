@@ -89,7 +89,8 @@ function tx_parse(data){
     rec_set.txid = data.message.txid;
     rec_set.confirmations = data.message.confirmations;
     rec_set.receives = data.message.details.map(async function(obj){
-     return {"address":obj.address, "amount":obj.amount};
+     let receives = {"address":obj.address, "amount":obj.amount};
+     return JSON.stringify(receives);
     })
     Promise.all(rec_set.receives)
     .then(()=> resolve(rec_set))
