@@ -66,6 +66,7 @@ return new Promise((resolve,reject)=>{
   //  console.log("RESPONSE",response);
     tx_parse(JSON.parse(body))
     .then(responso=>{
+     console.log("DEL RESPONSO", responso);
      resolve(JSON.stringify(responso));
     })
     .catch(err=>{
