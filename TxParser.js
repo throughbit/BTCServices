@@ -93,11 +93,11 @@ function tx_parse(data){
     rec_set.receives = data.message.details.map(async function(obj){
      let receives = {"address":obj.address, "amount":obj.amount};
      console.log(receives);
-     return JSON.stringify(receives);
+     return (receives);
     })
     await Promise.all(rec_set.receives)
     .then((thesereceives)=>{
-     console.log(rec_set);
+     rec_set.receives = thesereceives;
      resolve(rec_set);
     })
     .catch((e)=>reject(e));
