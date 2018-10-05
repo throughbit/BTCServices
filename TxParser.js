@@ -90,6 +90,7 @@ function tx_parse(data){
     rec_set.confirmations = data.message.confirmations;
     rec_set.receives = data.message.details.map(async function(obj){
      let receives = {"address":obj.address, "amount":obj.amount};
+     console.log(receives);
      return JSON.stringify(receives);
     })
     Promise.all(rec_set.receives)
