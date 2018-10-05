@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 var rec_set = {
  "txid":'',
  "confirmations":'',
- "receives":[{"address":'', "amount":''}];
+ "receives":[{"address":'', "amount":''}]
 }
 //-o_o===node-update======================================================|
 app.post('/node-update', async (req,res)=>{
