@@ -87,7 +87,7 @@ function tx_parse(data){
     rec_set.txid = data.txid;
     rec_set.confirmations = data.confirmations;
     rec_set.add_amt = data.details.map(async function(obj){
-     return {obj.address:obj.amount};
+     return {obj[address]:obj[amount]};
     })
     .then(()=>resolve(rec_set))
     .catch(e=>reject(e));
