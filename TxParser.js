@@ -86,6 +86,7 @@ return new Promise((resolve,reject)=>{
 function tx_parse(data){
  return new Promise((resolve,reject)=>{
   try{
+   console.log(data.message.details);
     rec_set.txid = data.message.txid;
     rec_set.confirmations = data.message.confirmations;
     rec_set.receives = data.message.details.map(async function(obj){
