@@ -140,6 +140,7 @@ app.post('/tx_detail_local', async (req,res)=>{
     let response = errorSet.errorFunc("fail",err);
     res.send(response);
    }
+  });
  }
  catch(e){
   let response = errorSet.errorFunc('fail', e);
