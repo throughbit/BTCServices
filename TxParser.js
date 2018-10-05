@@ -86,11 +86,9 @@ return new Promise((resolve,reject)=>{
 function tx_parse(data){
  return new Promise((resolve,reject)=>{
   try{
-   console.log(data);
-   console.log(data.details);
-    rec_set.txid = data.txid;
-    rec_set.confirmations = data.confirmations;
-    rec_set.receives = data.details.map(async function(obj){
+    rec_set.txid = data.message.txid;
+    rec_set.confirmations = data.message.confirmations;
+    rec_set.receives = data.message.details.map(async function(obj){
      return {"address":obj[address], "amount":obj[amount]};
     })
     .then(()=>resolve(rec_set))
