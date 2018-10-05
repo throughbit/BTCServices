@@ -110,8 +110,44 @@ console.log(options);
    res.send(response);
  }
 });
-//-o_o===TxDetail==================================================|
-app.post('/tx_detail', async (req,res)=>{
+//-o_o===TxDetail-local==================================================|
+app.post('/tx_detail_local', async (req,res)=>{
+ try{
+  let txid =req.body.txid;
+  options.body.method = 'gettransaction';
+  options.body.params = [];
+  options.body.params.push(txid);
+  await rp(options)
+   .then((resp)=>{
+    //console.log("RESPRESULT:",resp.result);
+    let response = errorSet.errorFunc('success',resp.result);
+    //console.log("RESPONSE",response);
+     res.send(response);
+    })
+   .catch((err)=>{
+   if(err.cause){
+//console.log("errcause",err.cause);
+    let response = errorSet.errorFunc("fail",err.cause);
+    res.send(response);
+   }
+   else if(err.error){
+//console.log("errerrror",err.error);
+    let response = errorSet.errorFunc("fail",err.error.error.message);
+    res.send(response);
+   }
+   else{
+//console.log("generalerr", err);
+    let response = errorSet.errorFunc("fail",err);
+    res.send(response);
+   }
+ }
+ catch(e){
+  let response = errorSet.errorFunc('fail', e);
+  res.send(response);
+ }
+});
+//-o_o===TxDetail-global===================================================|v
+app.post('/tx_detail_global', async (req,res)=>{
  try{
   raw_tx(req.body.txid)
   .then(async (hex)=>{
@@ -165,7 +201,7 @@ console.log("generalerr2", err);
   res.send(response);
  }
 });
-//-o_o===RawTx--=================================================+=|
+//-o_o===GetRawTx--===============================================+=|
 function raw_tx(txid){
  return new Promise(async (resolve,reject)=>{
   try{
