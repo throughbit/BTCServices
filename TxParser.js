@@ -94,7 +94,9 @@ function tx_parse(data){
      return JSON.stringify(receives);
     })
     await Promise.all(rec_set.receives)
-    .then(()=> resolve(rec_set))
+    .then((rec_set.receives)=>{
+     console.log(rec_set.receives);
+     resolve(rec_set))
     .catch((e)=>reject(e));
   } 
   catch(e){
