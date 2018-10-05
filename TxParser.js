@@ -91,7 +91,7 @@ function tx_parse(data){
     rec_set.receives = data.message.details.map(async function(obj){
      return {"address":obj[address], "amount":obj[amount]};
     })
-    Promises.all(rec_set.receives)
+    Promise.all(rec_set.receives)
     .then(()=> resolve(rec_set))
     .catch((e)=>reject(e));
   } 
