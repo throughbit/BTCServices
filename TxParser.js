@@ -11,6 +11,7 @@ var express = require('express');
 var helmet = require('helmet');
 var bodyParser = require('body-parser');
 var rp = require ('request-promise-native');
+var slack = require('./SlackNode.js');
 //-o_O===init===================================================~|
 const UPD_PORT = process.env.W_UPD;
 //Server created to respond to wallet_notify
@@ -24,7 +25,6 @@ app.use(helmet.noCache());
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}));
 
-var txidTest='bea1dfd606d52968816bafa5ec034ca0adfdc650e6e0c83f3dba1d2a58779d64'
 var add_am = {
  "address":[],
  "amount":''
@@ -32,10 +32,11 @@ var add_am = {
 //-o_o===node-update======================================================|
 app.post('/node-update', async (req,res)=>{
  try{
-  tx_detail(txidTest)
+  tx_detail(req.body.txid)
   .then(data=>{
    let response = errorSet.errorFunc('success',data);
   // console.log(response);
+  slack.update_slack(JSON.stringify(data),'Receive Notifier');
    res.send(response);
   })
  }
@@ -51,7 +52,7 @@ return new Promise((resolve,reject)=>{
  try{
    request.post({
     "headers":{ "content-type": "application/json" },
-    "url": `${server_url}/tx_detail`,
+    "url": `${server_url}/tx_detail_local`,
     "body": JSON.stringify({"txid":txid})
    },(error, response, body)=>{
     if(error){
