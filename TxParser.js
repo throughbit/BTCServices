@@ -27,9 +27,8 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 var rec_set = {
  "txid":'',
- "address":[],
- "amount":'',
- "confirmations":''
+ "confirmations":'',
+ "add_amt":[]
 }
 //-o_o===node-update======================================================|
 app.post('/node-update', async (req,res)=>{
@@ -85,16 +84,13 @@ return new Promise((resolve,reject)=>{
 function tx_parse(data){
  return new Promise((resolve,reject)=>{
   try{
-   if(data.details[0].category=='receive'){
     rec_set.txid = data.txid;
-    rec_set.address = data.details[0].address;
-    rec_set.amount = data.amount;
     rec_set.confirmations = data.confirmations;
-    resolve(rec_set);
-   }
-   else{
-    reject("Not a receive");
-   }
+    rec_set.add_amt = data.details.map(async function(obj){
+     return {obj.address:obj.amount};
+    })
+    .then(()=>resolve(rec_set))
+    .catch(e=>reject(e));
   } 
   catch(e){
    reject(e);
