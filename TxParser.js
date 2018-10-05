@@ -37,7 +37,7 @@ app.post('/node-update', async (req,res)=>{
  try{
   tx_detail(txid)
   .then(data=>{
-   console.log("FINAL DATA",data);
+   //console.log("FINAL DATA",data);
    let response = errorSet.errorFunc('success',data);
   // console.log(response);
   slack.update_slack(JSON.stringify(data),'Receive Notifier');
@@ -67,8 +67,8 @@ return new Promise((resolve,reject)=>{
   //  console.log("RESPONSE",response);
     tx_parse(JSON.parse(body))
     .then(responso=>{
-     console.log("DEL RESPONSO", responso);
-     resolve(JSON.stringify(responso));
+     //console.log("DEL RESPONSO", responso);
+     resolve(responso);
     })
     .catch(err=>{
      console.log(err);
