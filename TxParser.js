@@ -25,8 +25,6 @@ app.use(helmet.noCache());
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}));
 
-const txid = '18f78b4c8eb87938bb7bc06585f2edb879ae7bc6e971a79ff2c92144edaf18aa '
-
 var rec_set = {
  "txid":'',
  "confirmations":'',
@@ -35,7 +33,7 @@ var rec_set = {
 //-o_o===node-update======================================================|
 app.post('/node-update', async (req,res)=>{
  try{
-  tx_detail(txid)
+  tx_detail(req.body.txid)
   .then(data=>{
    //console.log("FINAL DATA",data);
    let response = errorSet.errorFunc('success',data);
