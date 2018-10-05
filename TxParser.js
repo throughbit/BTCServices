@@ -25,9 +25,11 @@ app.use(helmet.noCache());
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}));
 
-var add_am = {
+var rec_set = {
+ "txid":'',
  "address":[],
- "amount":''
+ "amount":'',
+ "confirmations":''
 }
 //-o_o===node-update======================================================|
 app.post('/node-update', async (req,res)=>{
@@ -83,10 +85,17 @@ return new Promise((resolve,reject)=>{
 function tx_parse(data){
  return new Promise((resolve,reject)=>{
   try{
-  add_am.address = data.message.vout[1].scriptPubKey.addresses;
-  add_am.amount = data.message.vout[1].value;
-   resolve(add_am);
-  }
+   if(data.details[0].category=='receive'){
+    rec_set.txid = data.txid;
+    rec_set.address = data.details[0].address;
+    rec_set.amount = data.amount;
+    rec_set.confirmations = data.confirmations;
+    resolve(rec_set);
+   }
+   else{
+    reject("Not a receive");
+   }
+  } 
   catch(e){
    reject(e);
   }
