@@ -1,6 +1,7 @@
 /*
-HYFERx Project
 errors
+Developed at ThroughBit Technologies Pvt.Ltd
+HYFERx Project
 */
 //-o_O============================================================~|
 'use strict';
