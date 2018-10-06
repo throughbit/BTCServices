@@ -41,6 +41,8 @@ Serving JSON-RPC to the full node for the following commands at given end points
 
 - **getnewaddress** @ curl -X POST "http://localhost:PORT/new_address"
 
+- **validateaddress** @ curl -X POST "http://localhost:PORT>/validate_address" -d “address=insert-address” (Used for local address checks)
+
 - **gettransaction** @ curl -X POST "http://localhost:PORT>/tx_detail_local" -d “txid=insert-txid” (Used for local address checks)
 
 - **getrawtransaction+decoderawtransaction** @ curl -X POST "http://localhost:PORT/tx_detail_global" -d “txid=insert-txid” (Used for checking any address)
