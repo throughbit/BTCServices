@@ -24,15 +24,18 @@ Returns txid, confirmations, address and amount.
 
 General purpose slack notifier. Takes two arguments: data,title:
 -data is the message being passed 
+
 -title is the name under which the message is passed.
 
 #errors.js
 
 errors defines a format for passing responses. 
 All responses follow the format: 
+
 {status:'', message:''}
 
 Status 0 = Fail / False
+
 Status 1 = Success / True
 
 This strays away from the traditional C-standard since the boolean-int equivalent in JS is 0 = false and 1 = true. 
@@ -40,4 +43,5 @@ This allows easy checks via if(status){}
 
 Responses are created by calling:
 -errorFunc("fail","message") 
+
 -errorFunc("success","message")
