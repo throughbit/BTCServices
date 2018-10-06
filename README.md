@@ -12,7 +12,7 @@ initialize environment variables for:
  
  **Usage**
  
-The primary utility of such an interface is to act as a proxy between the public and your local crypto full node.
+The primary utility of such an interface is to act as a proxy between a third-party/the public and your local crypto full node.
 Allowing complete access to your full node to the public has certain security concerns, especially if you are holding your keys locally.
 This restricts the public's access to a select few functions on your node. 
 This code can be used and extended to support more client commands.
