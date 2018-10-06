@@ -35,11 +35,12 @@ app.post('/node-update', async (req,res)=>{
  try{
   tx_detail(req.body.txid)
   .then(data=>{
-   //console.log("FINAL DATA",data);
-   let response = errorSet.errorFunc('success',data);
-  // console.log(response);
-  slack.update_slack(JSON.stringify(data),'Receive Notifier');
-   res.send(response);
+   if(data.receives!==[{}]||data.receives!==[]){
+    let response = errorSet.errorFunc('success',data);
+    slack.update_slack(JSON.stringify(data),'Receive Notifier');
+    res.send(response);
+   }
+   //How to cancel response incase of empty receives set i.e. incase notification is for sends
   })
  }
  catch(e){
@@ -88,10 +89,13 @@ function tx_parse(data){
   try{
     rec_set.txid = data.message.txid;
     rec_set.confirmations = data.message.confirmations;
+    rec_set.receives = [];
     rec_set.receives = data.message.details.map(async function(obj){
-     let receives = {"address":obj.address, "amount":obj.amount};
-     console.log(receives);
-     return (receives);
+     if(data.message.details.category==='receive'){
+      let receives = {"address":obj.address, "amount":obj.amount};
+      console.log(receives);
+      return (receives);
+     }
     })
     await Promise.all(rec_set.receives)
     .then((thesereceives)=>{
