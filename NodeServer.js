@@ -48,7 +48,8 @@ app.post('/get_utxo', async (req,res)=>{
   options.body.params = [];
   options.body.params.push(10);
   options.body.params.push(999999);
-  options.body.params.push(req.body.addresses);
+  let addresses = req.body.addresses;
+  options.body.params.push(addresses);
   
   await rp(options)
    .then((resp)=>{
@@ -113,7 +114,8 @@ app.post('/validate_address', async (req,res)=>{
   options.body.id='ValidateAddress';
   options.body.method='validateaddress';
   options.body.params = [];
-  options.body.params.push(req.body.address);
+  let address = req.body.address;
+  options.body.params.push(address);
 
   await rp(options)
   .then((resp)=>{
