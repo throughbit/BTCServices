@@ -17,9 +17,9 @@ Serving JSON-RPC to the full node for the following commands at given end points
   
 #TxParse.js
 
-Called via wallet-notify to parse details of a txid regarding ONLY incoming transactions.
+Called via wallet-notify to parse details of a txid regarding ONLY incoming transactions i.e. receives.
 Returns txid, confirmations, address and amount.
 
 #SlackNode.js
 
-Slack notifier.
+General purpose slack notifier. Takes two arguments: data,title. Data is the message being passed. Title is the name under which the message is passed.
