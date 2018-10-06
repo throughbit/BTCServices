@@ -5,7 +5,7 @@
 
 Serving JSON-RPC to the full node for the following commands at given end points:
 
-- getnewaddress @ curl -X POST "http://localhost:\<port\>/new_address"
+- getnewaddress @ curl -X POST "http://localhost:<port>/new_address"
 
 - gettransaction @ curl -X POST "http://localhost:\<port\>/tx_detail_local" -d “txid=<input>” (Used for local address checks)
 
