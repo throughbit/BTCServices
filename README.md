@@ -23,8 +23,8 @@ In such a scenario even a compromised rpcuser:rpcpassword will hinder Eve from c
 
 ## Security Notes:
 All sensitive variables are stored as environment variables. 
-It is recommended that the user of these modules futher obfuscate sensitive data (such as authentication) by sharding the data stored in env variables and using another script to put the shards together and reconstitute the original data. Such a script must stay private. 
-For higher levels of security, 2FA can be added to these scripts.
+It is recommended that the user of these modules futher obfuscate sensitive data (such as authentication) by sharding the data stored in env variables and using another script to put the shards together and reconstitute the original data. Such a script must stay private. For higher levels of security, 2FA can be added to these scripts.
+
 If you have any recommendations on best practices for storing authentication tokens on a server, please leave a message :) 
 
 
