@@ -30,6 +30,7 @@ General purpose slack notifier. Takes two arguments: data,title:
 #errors.js
 
 errors defines a format for passing responses. 
+
 All responses follow the format: 
 
 {status:'', message:''}
@@ -42,6 +43,7 @@ This strays away from the traditional C-standard since the boolean-int equivalen
 This allows easy checks via if(status){}
 
 Responses are created by calling:
+
 -errorFunc("fail","message") 
 
 -errorFunc("success","message")
