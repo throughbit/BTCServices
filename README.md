@@ -4,11 +4,11 @@ A basic node interface tool-kit for BTC forked crypto-networks like DGB, VTC, DO
 
 To get up an running:
 
-- initialize environment variables for
+initialize environment variables for:
  - local node's rpcport 
  - the port on which this interface will run 
  - a port for wallet-notify updates
- - local node rpcuser:rpcpassword encoded in Base64
+ - the local node's rpcuser:rpcpassword encoded in Base64
  
  **Usage**
 The primary utility of such an interface is to act as a proxy between the public and your local crypto full node.
