@@ -17,5 +17,5 @@ Serving JSON-RPC to the full node for the following commands at given end points
   
 #TxParse.js
 
-Called via wallet-notify to parse details of a txid regarding incoming and outgoing transactions.
-Returns txid, confirmations, type, address and amount.
+Called via wallet-notify to parse details of a txid regarding ONLY incoming transactions.
+Returns txid, confirmations, address and amount.
