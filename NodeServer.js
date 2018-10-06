@@ -14,7 +14,7 @@ var rp = require ('request-promise-native');
 const S_PORT = process.env.SERV;
 const NODE_PORT = process.env.NODE;
 const RPC_AUTH = process.env.RPC_AUTH;
-const digiurl = `http://localhost:${NODE_PORT}`;
+const nodeurl = `http://localhost:${NODE_PORT}`;
 
 var app = express();
 app.use(helmet());
@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 var options = {
  method: 'POST',
- url: digiurl,
+ url: nodeurl,
  headers:
  {
   Authorization: 'Basic ' + RPC_AUTH,
