@@ -29,15 +29,13 @@ General purpose slack notifier. Takes two arguments: data,title:
 
 #errors.js
 
-errors defines a format for passing responses. 
+errors defines a format for passing responses. All responses follow the format: 
 
-All responses follow the format: 
+{status:" ", message:" "}
 
-{status:'', message:''}
+status 0 = Fail / False
 
-Status 0 = Fail / False
-
-Status 1 = Success / True
+status 1 = Success / True
 
 This strays away from the traditional C-standard since the boolean-int equivalent in JS is 0 = false and 1 = true. 
 This allows easy checks via if(status){}
@@ -47,3 +45,5 @@ Responses are created by calling:
 -errorFunc("fail","message") 
 
 -errorFunc("success","message")
+
+eg. {status:0, message:"Successfully saved your shit"}
