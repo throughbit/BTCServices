@@ -1,6 +1,6 @@
 /*
 HYFERx Project
-Digibyte Tx Parser
+Tx Parser
 */
 //-o_O==========================================================~|
 'use strict';
@@ -44,59 +44,55 @@ app.post('/node-update', async (req,res)=>{
   })
  }
  catch(e){
-   let response = errorSet.errorFunc("fail",e);
-  // console.log(response);
-   res.send(response);
+  let response = errorSet.errorFunc("fail",e);
+  res.send(response);
  }
 });
 //-o_o===tx-detail================================================|
 function tx_detail(txid){
 return new Promise((resolve,reject)=>{
  try{
-   request.post({
-    "headers":{ "content-type": "application/json" },
-    "url": `${server_url}/tx_detail_local`,
-    "body": JSON.stringify({"txid":txid})
-   },(error, response, body)=>{
+  request.post({
+   "headers":{ "content-type": "application/json" },
+   "url": `${server_url}/tx_detail_local`,
+   "body": JSON.stringify({"txid":txid})
+  },
+   (error, response, body)=>{
     if(error){
-    let respo = errorSet.errorFunc('fail',error);
-    reject(respo);
+     let respo = errorSet.errorFunc('fail',error);
+     reject(respo);
     }
-//    console.log("BODY",body);
-  //  console.log("RESPONSE",response);
     tx_parse(JSON.parse(body))
     .then(responso=>{
-     //console.log("DEL RESPONSO", responso);
      resolve(responso);
     })
     .catch(err=>{
-     console.log(err);
      reject(err);
-     })
-  });
- }
- catch(e){
-  let response = errorSet.errorFunc('fail', e);
-  reject(response);
- }
-});
+    })
+   });
+  }
+  catch(e){
+   let response = errorSet.errorFunc('fail', e);
+   reject(response);
+  }
+ });
 }
-
 //-o_o===tx-parse================================================|
-
 function tx_parse(data){
  return new Promise(async (resolve,reject)=>{
   try{
     rec_set.txid = data.message.txid;
     rec_set.confirmations = data.message.confirmations;
     rec_set.receives = [];
+   
     rec_set.receives = data.message.details.map(async function(obj){
      if(data.message.details.category==='receive'){
       let receives = {"address":obj.address, "amount":obj.amount};
       console.log(receives);
       return (receives);
      }
-    })
+    });
+   
     await Promise.all(rec_set.receives)
     .then((thesereceives)=>{
      rec_set.receives = thesereceives;
