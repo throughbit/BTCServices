@@ -2,6 +2,12 @@
 Node Server
 Developed at ThroughBit Technologies Pvt. Ltd.
 HYFERx Project
+Requires: 
+-Input checks: 
+although no harm done without input sanitization:-
+nothing you could pass instead of txid/hex/address that would compromise the interface or the underlying node.
+-Review of error handling
+-Review of aync behaviour
 */
 //-<..>===========================================================~|
 'use strict';
