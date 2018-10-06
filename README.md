@@ -76,6 +76,8 @@ General purpose slack notifier. Takes two arguments: *(data,title)*:
 
 -*title* is the name under which the message is passed.
 
+Set environement variable Slack_Weburi to attack your own Slack Webhook.
+
 ## errors.js
 
 errors defines a format for passing responses. All responses follow the format: 
