@@ -1,6 +1,7 @@
 /*
-HYFERx Project
 Node Server
+Developed at ThroughBit Technologies Pvt. Ltd.
+HYFERx Project
 */
 //-<..>===========================================================~|
 'use strict';
