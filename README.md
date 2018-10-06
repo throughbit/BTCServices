@@ -67,6 +67,7 @@ Returns txid, confirmations, address and amount.
 The primary utility of this txparser is to notify the node admin about incoming transactions or receives. 
 It can be extended to support notifications for outgoing transactions by removing the section commented in the code as //remove this condition to allow send notify.
 
+
 ## SlackNode.js
 
 General purpose slack notifier. Takes two arguments: *(data,title)*:
