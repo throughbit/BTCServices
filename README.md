@@ -13,21 +13,21 @@ initialize environment variables for:
  
  **Usage**
  
-The primary utility of such an interface is to act as a proxy between a third-party/the public and your local crypto full node.This third party could be a web/mobile app you develop to access your full-node from anywhere in the world.
+The primary utility of such an interface is to act as a proxy between a third-party/the public and your local crypto full node. This third party could be a web/mobile app you develop to access your full-node from anywhere in the world.
 
 It is crucial to restrict third-party access to only a select few functions on your node. 
 
 **This code can easily be used and extended to support more client commands.**
+
+**It is recommended _not to extend this interface to allow sendtoaddress/sendtomany etc._ as Eve can flood the interface with send requests which will execute as soon as the full node's walletpassphrase is entered.**
+
+Use a offline transaction builder to create transactions and allow the interface to only broadcast a raw transaction hex.
 
 *Ensure that your full node only accepts rpc from a locally running NodeServer.js using rpcallow=127.0.0.1*
 
 In such a scenario even a compromised rpcuser:rpcpassword will hinder Eve from connecting to the local node and attempting to spend.  
 
 It is not recommended to hodl crypto on a public node. Funds received at such nodes must immediately be sent out to a cold address. Receives to this node can be entirely avoided if the wallet-notify function and HD wallet implementation are re-written. This is the most secure crypto-bank set up and the interface will only serve you in transacting with the network in a trustless manner. 
-
-**It is recommended _not to extend this interface to allow sendtoaddress/sendtomany etc._ as Eve can flood the interface with send requests which will execute as soon as the full node's walletpassphrase is entered.**
-
-Use a offline transaction builder to create transactions and allow the interface to only broadcast a raw transaction hex.
 
 ## Security Notes:
 All sensitive variables are stored as environment variables. 
