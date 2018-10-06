@@ -1,7 +1,7 @@
 # Node Services
 Be your own bank!
 
-A basic node interface tool-kit for BTC forked crypto-networks like DGB, VTC, DOGE etc., to help you manage and access your full-node with greater ease and portability.  
+A basic node interface for BTC forked crypto-networks like DGB, VTC, DOGE etc., to help you manage and access your full-node with greater ease and portability.  
 
 To get up an running:
 
