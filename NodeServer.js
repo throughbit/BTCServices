@@ -2,7 +2,7 @@
 HYFERx Project
 Node Server
 */
-//-o_O============================================================~|
+//-<..>===========================================================~|
 'use strict';
 //-o_o===modules===================================================|
 var errorSet = require('./errors.js');
@@ -39,7 +39,7 @@ var options = {
  },
  json: true
 };
-//-o_o===UTXO======================================================|
+//-o_o===getUTxO===================================================|
 app.post('/get_utxo', async (req,res)=>{
  try{
   options.body.id = 'GetUTxO';
@@ -49,10 +49,8 @@ app.post('/get_utxo', async (req,res)=>{
   options.body.params.push(999999);
   options.body.params.push(req.body.addresses);
   
-  //console.log(JSON.stringify(options));
   await rp(options)
    .then((resp)=>{
- //   console.log(resp.result);
     let response = errorSet.errorFunc("success",resp.result);
     res.send(response);
    })
@@ -60,7 +58,7 @@ app.post('/get_utxo', async (req,res)=>{
     if(err.cause){
      let response = errorSet.errorFunc("fail",err.cause);
      res.send(response);
-     }
+    }
     if(err.error){
      let response = errorSet.errorFunc("fail",err.error.error.message);
      res.send(response);
@@ -73,7 +71,6 @@ app.post('/get_utxo', async (req,res)=>{
  }
  catch(e){
    let response = errorSet.errorFunc("fail",e);
- //  console.log(response);
    res.send(response);
  }
 });
@@ -86,7 +83,6 @@ app.post('/new_address', async (req,res)=>{
 
   await rp(options)
    .then((resp)=>{
-    //console.log(resp.result);
     let response = errorSet.errorFunc("success",resp.result);
     res.send(response);
    })
@@ -107,11 +103,11 @@ app.post('/new_address', async (req,res)=>{
  }
  catch(e){
    let response = errorSet.errorFunc("fail",e);
-   //console.log(response);
    res.send(response);
  }
 });
 //-o_o===TxDetail-local==================================================|
+//Gets TxDetails for local addresses
 app.post('/tx_detail_local', async (req,res)=>{
  try{
   let txid =req.body.txid;
@@ -120,13 +116,11 @@ app.post('/tx_detail_local', async (req,res)=>{
   options.body.params.push(txid);
   
   await rp(options)
-   .then((resp)=>{
-    //console.log("RESPRESULT:",resp.result);
-    let response = errorSet.errorFunc('success',resp.result);
-    //console.log("RESPONSE",response);
-     res.send(response);
-    })
-   .catch((err)=>{
+  .then((resp)=>{
+   let response = errorSet.errorFunc('success',resp.result);
+    res.send(response);
+  })
+  .catch((err)=>{
    if(err.cause){
     //console.log("errcause",err.cause);
     let response = errorSet.errorFunc("fail",err.cause);
@@ -136,7 +130,7 @@ app.post('/tx_detail_local', async (req,res)=>{
     //console.log("errerrror",err.error);
     let response = errorSet.errorFunc("fail",err.error.error.message);
     res.send(response);
-   }
+    }
    else{
     //console.log("generalerr", err);
     let response = errorSet.errorFunc("fail",err);
@@ -151,49 +145,47 @@ app.post('/tx_detail_local', async (req,res)=>{
 });
 //-o_o===TxDetail-global===================================================|v
 app.post('/tx_detail_global', async (req,res)=>{
+//Gets TxDetails for any transaction on the network
  try{
   raw_tx(req.body.txid)
   .then(async (hex)=>{
    options.body.method = 'decoderawtransaction';
    options.body.params = [];
    options.body.params.push(hex);
+   
    await rp(options)
    .then((resp)=>{
-    //console.log("RESPRESULT:",resp.result);
     let response = errorSet.errorFunc('success',resp.result);
-    //console.log("RESPONSE",response);
-     res.send(response);
-    })
+    res.send(response);
+   })
    .catch((err)=>{
-   if(err.cause){
-    //console.log("errcause",err.cause);
-    let response = errorSet.errorFunc("fail",err.cause);
-    res.send(response);
-   }
-   else if(err.error){
-    //console.log("errerrror",err.error);
-    let response = errorSet.errorFunc("fail",err.error.error.message);
-    res.send(response);
-   }
-   else{
-    //console.log("generalerr", err);
-    let response = errorSet.errorFunc("fail",err);
-    res.send(response);
-   }
-  })})
+    if(err.cause){
+     //console.log("errcause",err.cause);
+     let response = errorSet.errorFunc("fail",err.cause);
+     res.send(response);
+    }
+    else if(err.error){
+     //console.log("errerrror",err.error);
+     let response = errorSet.errorFunc("fail",err.error.error.message);
+     res.send(response);
+    }
+    else{
+     //console.log("generalerr", err);
+     let response = errorSet.errorFunc("fail",err);
+     res.send(response);
+    }
+   })//after awaiting rp(options)
+  })//after fetching rawtxid
   .catch((err)=>{
    if(err.cause){
-    //console.log("errcause2",err.cause);
     let response = errorSet.errorFunc("fail",err.cause);
     res.send(response);
    }
    else if(err.error){
-    //console.log("errerrror2",err.error);
     let response = errorSet.errorFunc("fail",err.error.error.message);
     res.send(response);
    }
    else{
-    //console.log("generalerr2", err);
     let response = errorSet.errorFunc("fail",err);
     res.send(response);
    }
@@ -208,33 +200,30 @@ app.post('/tx_detail_global', async (req,res)=>{
 function raw_tx(txid){
  return new Promise(async (resolve,reject)=>{
   try{
-    options.body.method = 'getrawtransaction';
-    options.body.params = [];
-    options.body.params.push(txid);
-    await rp(options)
-    .then((resp)=>{
-      //console.log("RESPRESULT",resp.result);
-     let response = errorSet.errorFunc('success',resp.result);
-      //console.log("RESPONSE", response);
-     resolve(response.message);
-    }).catch((err)=>{
-     if(err.cause){
-      //console.log("errcause", err.cause);
-      let response = errorSet.errorFunc("fail",err.cause);
-      reject(response);
-     }
-     if(err.error){
-      //console.log("errerror3", err.error);
-      let response = errorSet.errorFunc("fail",err.error.error.message);
-      reject(response);
-     }
-     else{
-     //console.log("generalerr3", err);
+   options.body.method = 'getrawtransaction';
+   options.body.params = [];
+   options.body.params.push(txid);
+
+   await rp(options)
+   .then((resp)=>{
+    let response = errorSet.errorFunc('success',resp.result);
+    resolve(response.message);
+   })
+   .catch((err)=>{
+    if(err.cause){
+     let response = errorSet.errorFunc("fail",err.cause);
+     reject(response);
+    }
+    if(err.error){
+     let response = errorSet.errorFunc("fail",err.error.error.message);
+     reject(response);
+    }
+    else{
      let response = errorSet.errorFunc("fail",err);
-      reject(response);
-     }
-    });
-   }
+     reject(response);
+    }
+   });
+  }
   catch(e){
    let response = errorSet.errorFunc('fail', e);
    reject(response);
@@ -249,30 +238,27 @@ app.post('/broadcastx', async (req,res)=>{
   options.body.params = [];
   options.body.params.push(req.body.hex);
 
-  //console.log(options);
   await rp(options)
-   .then((resp)=>{
-    console.log(resp);
-    res.send(resp);
-   })
-   .catch((err)=>{
-    if(err.cause){
-     let response = errorSet.errorFunc('fail',err.cause);
-     res.send(response);
-     }
-    if(err.error){
-     let response = errorSet.errorFunc('fail',err.error.error.message);
-     res.send(response);
-    }
-    else{
-     let response = errorSet.errorFunc('fail',err);
-     res.send(response);
-    }
-   });
+  .then((resp)=>{
+   res.send(resp);
+  })
+  .catch((err)=>{
+   if(err.cause){
+    let response = errorSet.errorFunc('fail',err.cause);
+    res.send(response);
+   }
+   if(err.error){
+    let response = errorSet.errorFunc('fail',err.error.error.message);
+    res.send(response);
+   }
+   else{
+    let response = errorSet.errorFunc('fail',err);
+    res.send(response);
+   }
+  });
  }
  catch(e){
    let response = errorSet.errorFunc('fail',e);
-   //console.log(response);
    res.send(response);
  }
 });
