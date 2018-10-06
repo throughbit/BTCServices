@@ -27,7 +27,7 @@ Use a offline transaction builder to create transactions and allow the interface
 
 In such a scenario even a compromised rpcuser:rpcpassword will hinder Eve from connecting to the local node and attempting to spend.  
 
-It is not recommended to hodl crypto on a public node. Funds received at such nodes must immediately be sent out to a cold address. Receives to this node can be entirely avoided if the wallet-notify function and HD wallet implementation are re-written. This is the most secure crypto-bank set up and the interface will only serve you in transacting with the network in a trustless manner. 
+It is not recommended to hodl crypto on a public node. Funds received at such nodes must immediately be sent out to a cold wallet. This wallet will include transaction building functions and broadcast signed transactions to the public node. Receives to the public node can be entirely avoided if the wallet-notify function and HD wallet implementation are re-written as part of the cold wallet. This woudl be the most secure crypto-bank set up and the node interface will only serve you in transacting with the network in a trustless manner. 
 
 ## Security Notes:
 All sensitive variables are stored as environment variables. 
