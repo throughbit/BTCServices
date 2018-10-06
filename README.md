@@ -23,6 +23,7 @@ Returns txid, confirmations, address and amount.
 ## SlackNode.js
 
 General purpose slack notifier. Takes two arguments: *(data,title)*:
+
 -*data* is the message being passed 
 
 -*title* is the name under which the message is passed.
