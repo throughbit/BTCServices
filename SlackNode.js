@@ -1,6 +1,7 @@
 /*
+Slack Node
+Developed at ThroughBit Technologies Pvt.Ltd
 HYFERx Project
-TBIT Slack Node
 */
 //-o_O==========================================================~|
 'use strict';
