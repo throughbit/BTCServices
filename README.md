@@ -5,19 +5,21 @@ A basic node interface tool-kit for BTC forked crypto-networks like DGB, VTC, DO
 To get up an running:
 
 initialize environment variables for:
- - local node's rpcport 
- - the port on which this interface will run 
- - a port for wallet-notify updates
- - the local node's rpcuser:rpcpassword encoded in Base64
+ - **NODE_PORT** : local node's rpcport 
+ - **S_PORT** : the port on which this interface will run 
+ - **W_UPD** : a port for wallet-notify updates
+ - **RPC_AUTH** : the local node's rpcuser:rpcpassword encoded in Base64
  
  **Usage**
+ 
 The primary utility of such an interface is to act as a proxy between the public and your local crypto full node.
 Allowing complete access to your full node to the public has certain security concerns, especially if you are holding your keys locally.
 This restricts the public's access to a select few functions on your node. 
 This code can be used and extended to support more client commands.
 
 *Ensure that your full node only accepts rpc from a locally running NodeServer.js using rpcallow=127.0.0.1*
-In such a scenario even a compromised rpcuser:rpcpassword will hinder Eve from connecting to the local node.  
+
+In such a scenario even a compromised rpcuser:rpcpassword will hinder Eve from connecting to the local node and attempting to spend.  
 
 ## Security Notes:
 All sensitive variables are stored as environment variables. 
