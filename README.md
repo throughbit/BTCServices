@@ -1,5 +1,31 @@
 # Node Services
 
+A basic node interface tool-kit for BTC forked crypto-networks like DGB, VTC, DOGE etc. 
+
+To get up an running:
+
+- initialize environment variables for
+ - local node's rpcport 
+ - the port on which this interface will run 
+ - a port for wallet-notify updates
+ - local node rpcuser:rpcpassword encoded in Base64
+ 
+ **Usage**
+The primary utility of such an interface is to act as a proxy between the public and your local crypto full node.
+Allowing complete access to your full node to the public has certain security concerns, especially if you are holding your keys locally.
+This restricts the public's access to a select few functions on your node. 
+This code can be used and extended to support more client commands.
+
+*Ensure that your full node only accepts rpc from a locally running NodeServer.js using rpcallow=127.0.0.1*
+In such a scenario even a compromised rpcuser:rpcpassword will hinder Eve from connecting to the local node.  
+
+## Security Notes:
+All sensitive variables are stored as environment variables. 
+It is recommended that the user of these modules futher obfuscate sensitive data (such as authentication) by sharding the data stored in env variables and using another script to put the shards together and reconstitute the original data. Such a script must stay private. 
+For higher levels of security, 2FA can be added to these scripts.
+If you have any recommendations on best practices for storing authentication tokens on a server, please leave a message :) 
+
+
 ## NodeServer.js
 
 Serving JSON-RPC to the full node for the following commands at given end points:
@@ -15,12 +41,6 @@ Serving JSON-RPC to the full node for the following commands at given end points
 - **sendrawtransaction** @ curl -X POST "http://localhost:PORT/broadcastx" -d “hex=insert-txhex”
 
 
-**Usage**
-The primary utility of such an interface is to act as a proxy between the public and your local crypto full node.
-Allowing complete access to your full node to the public has certain security concerns, especially if you are holding your keys locally.
-This restricts the public's access to limited functions on your node. 
-This code can be used and extended to support more client commands. 
-  
 ## TxParse.js
 
 Called via wallet-notify to parse details of a txid regarding ONLY incoming transactions i.e. receives.
@@ -59,6 +79,4 @@ Responses are created by calling:
 
 eg. **{status: 0, message: "Successfully saved your shit"}**
 
-## Security Notes:
-All sensitive variables are stored as environment variables. 
-It is recommended that the user of these modules futher obfuscate sensitive data (such as authentication) by sharding the data stored in env variables and using another script to put the shards together and reconstitute the original data. Such a script must stay private. 
+
