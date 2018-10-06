@@ -58,6 +58,7 @@ Configure bitcoin.conf as follows:
 *wallet-notify = /path/to/script.sh %s*
 
 **%s** passes the txid to this scrpit. The script can then curl -X POST "https://localhost:PORT/node-update" -d "txid=$1"
+
 **$1** here accepts the first variable passed to the script i.e. the txid sent via wallet-notify.
 
 Called via wallet-notify to parse details of a txid regarding ONLY incoming transactions i.e. receives.
