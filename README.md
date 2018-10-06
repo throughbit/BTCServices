@@ -1,6 +1,7 @@
 # Node Services
+Be your own bank!
 
-A basic node interface tool-kit for BTC forked crypto-networks like DGB, VTC, DOGE etc. 
+A basic node interface tool-kit for BTC forked crypto-networks like DGB, VTC, DOGE etc., to help you manage your full-node with greater ease. 
 
 To get up an running:
 
@@ -15,7 +16,8 @@ initialize environment variables for:
 The primary utility of such an interface is to act as a proxy between a third-party/the public and your local crypto full node.
 Allowing complete access to your full node to the public has certain security concerns, especially if you are holding your keys locally.
 This restricts the public's access to a select few functions on your node. 
-This code can be used and extended to support more client commands.
+
+**This code can easily be used and extended to support more client commands.**
 
 *Ensure that your full node only accepts rpc from a locally running NodeServer.js using rpcallow=127.0.0.1*
 
