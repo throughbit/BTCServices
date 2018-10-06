@@ -1,6 +1,7 @@
 /*
+Tx Parser:
+Developed at ThroughBit Technologies Pvt.Ltd
 HYFERx Project
-Tx Parser
 */
 //-o_O==========================================================~|
 'use strict';
