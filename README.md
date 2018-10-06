@@ -1,7 +1,7 @@
-## Node Services
+# Node Services
 
 
-#NodeServer.js
+## NodeServer.js
 
 Serving JSON-RPC to the full node for the following commands at given end points:
 
@@ -15,19 +15,19 @@ Serving JSON-RPC to the full node for the following commands at given end points
 
 - sendrawtransaction @ curl -X POST "http://localhost:PORT/broadcastx" -d “hex=<input>”
   
-#TxParse.js
+## TxParse.js
 
 Called via wallet-notify to parse details of a txid regarding ONLY incoming transactions i.e. receives.
 Returns txid, confirmations, address and amount.
 
-#SlackNode.js
+## SlackNode.js
 
 General purpose slack notifier. Takes two arguments: data,title:
 -data is the message being passed 
 
 -title is the name under which the message is passed.
 
-#errors.js
+## errors.js
 
 errors defines a format for passing responses. All responses follow the format: 
 
