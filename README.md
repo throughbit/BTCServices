@@ -7,13 +7,13 @@ Serving JSON-RPC to the full node for the following commands at given end points
 
 - getnewaddress @ curl -X POST "http://localhost:PORT/new_address"
 
-- gettransaction @ curl -X POST "http://localhost:PORT>/tx_detail_local" -d “txid=<input>” (Used for local address checks)
+- gettransaction @ curl -X POST "http://localhost:PORT>/tx_detail_local" -d “txid=insert-txid” (Used for local address checks)
 
-- getrawtransaction+decoderawtransaction @ curl -X POST "http://localhost:PORT/tx_detail_global" -d “txid=<input>” (Used for checking any address)
+- getrawtransaction+decoderawtransaction @ curl -X POST "http://localhost:PORT/tx_detail_global" -d “txid=insert-txid” (Used for checking any address)
 
-- listunspent @ curl -X POST "http://localhost:PORT/get_utxo" -d "address=<input>"
+- listunspent @ curl -X POST "http://localhost:PORT/get_utxo" -d "addresses=insert-addresses-array"
 
-- sendrawtransaction @ curl -X POST "http://localhost:PORT/broadcastx" -d “hex=<input>”
+- sendrawtransaction @ curl -X POST "http://localhost:PORT/broadcastx" -d “hex=insert-txhex”
   
 ## TxParse.js
 
