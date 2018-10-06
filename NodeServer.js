@@ -107,7 +107,39 @@ app.post('/new_address', async (req,res)=>{
    res.send(response);
  }
 });
-//-o_o===TxDetail-local==================================================|
+//-o_o===ValidateAddr===============================================|
+app.post('/validate_address', async (req,res)=>{
+ try{
+  options.body.id='ValidateAddress';
+  options.body.method='validateaddress';
+  options.body.params = [];
+  options.body.params.push(req.body.address);
+
+  await rp(options)
+  .then((resp)=>{
+   res.send(resp);
+  })
+  .catch((err)=>{
+   if(err.cause){
+    let response = errorSet.errorFunc('fail',err.cause);
+    res.send(response);
+   }
+   if(err.error){
+    let response = errorSet.errorFunc('fail',err.error.error.message);
+    res.send(response);
+   }
+   else{
+    let response = errorSet.errorFunc('fail',err);
+    res.send(response);
+   }
+  });
+ }
+ catch(e){
+   let response = errorSet.errorFunc('fail',e);
+   res.send(response);
+ }
+});
+//-o_o===TxDetail-local==============================================|
 //Gets TxDetails for local addresses
 app.post('/tx_detail_local', async (req,res)=>{
  try{
@@ -144,7 +176,7 @@ app.post('/tx_detail_local', async (req,res)=>{
   res.send(response);
  }
 });
-//-o_o===TxDetail-global===================================================|v
+//-o_o===TxDetail-global=============================================|
 app.post('/tx_detail_global', async (req,res)=>{
 //Gets TxDetails for any transaction on the network
  try{
@@ -197,7 +229,7 @@ app.post('/tx_detail_global', async (req,res)=>{
   res.send(response);
  }
 });
-//-o_o===GetRawTx--===============================================+=|
+//-o_o===GetRawTx--=================================================|
 function raw_tx(txid){
  return new Promise(async (resolve,reject)=>{
   try{
