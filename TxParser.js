@@ -55,11 +55,13 @@ app.post('/node-update', async (req,res)=>{
 function tx_detail(txid){
 return new Promise((resolve,reject)=>{
  try{
+  let str = "txid=";
+  let bodystring=str.concat(txid);
   console.log(txid);
   request.post({
    "headers":{ "content-type": "application/json" },
    "url": `${server_url}/tx_detail_local`,
-   "body": `txid=${txid}`
+   "body": bodystring
   },
    (error, response, body)=>{
     if(error){
@@ -67,7 +69,7 @@ return new Promise((resolve,reject)=>{
      console.log(respo);
      reject(respo);
     }
-   console.log(error);
+   console.log(body);
    console.log(JSON.stringify(body));
     tx_parse(JSON.parse(body))
     .then(responso=>{
