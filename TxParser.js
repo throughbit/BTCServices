@@ -90,9 +90,8 @@ function tx_parse(data){
     rec_set.txid = data.message.txid;
     rec_set.confirmations = data.message.confirmations;
     rec_set.receives = [];
-   
+    console.log("The data to parse: ", data);
     rec_set.receives = data.message.details.map(async function(obj){
-     console.log(data);
      if(data.message.details.category=='receive'){ //remove this to also notify about sends
       let receives = {"address":obj.address, "amount":obj.amount};
       return (receives);
