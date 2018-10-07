@@ -57,7 +57,6 @@ return new Promise((resolve,reject)=>{
  try{
   let str = "txid=";
   let bodystring=str.concat(txid);
-  console.log(txid);
   request.post({
    "headers":{ "content-type": "application/json" },
    "url": `${server_url}/tx_detail_local`,
