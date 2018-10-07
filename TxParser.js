@@ -59,7 +59,7 @@ return new Promise((resolve,reject)=>{
   let bodystring=str.concat(txid);
   console.log(bodystring);
   request.post({
-   "headers":{ "content-type": "application/json" },
+   "headers":{ "content-type": "application/text" },
    "url": `${server_url}/tx_detail_local`,
    "body": bodystring
   },
