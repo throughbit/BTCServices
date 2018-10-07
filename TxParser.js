@@ -92,7 +92,8 @@ function tx_parse(data){
     rec_set.receives = [];
    
     rec_set.receives = data.message.details.map(async function(obj){
-     if(data.message.details.category==='receive'){ //remove this to also notify about sends
+     console.log(data);
+     if(data.message.details.category=='receive'){ //remove this to also notify about sends
       let receives = {"address":obj.address, "amount":obj.amount};
       return (receives);
      }
