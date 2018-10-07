@@ -46,6 +46,7 @@ app.post('/node-update', async (req,res)=>{
  }
  catch(e){
   let response = errorSet.errorFunc("fail",e);
+  console.log(response);
   res.send(response);
  }
 });
@@ -61,6 +62,7 @@ return new Promise((resolve,reject)=>{
    (error, response, body)=>{
     if(error){
      let respo = errorSet.errorFunc('fail',error);
+     console.log(respo);
      reject(respo);
     }
     tx_parse(JSON.parse(body))
@@ -68,12 +70,15 @@ return new Promise((resolve,reject)=>{
      resolve(responso);
     })
     .catch(err=>{
-     reject(err);
+     let responso = errorSet.errorFunc('fail',err);
+     console.log(responso);
+     reject(responso);
     })
    });
   }
   catch(e){
    let response = errorSet.errorFunc('fail', e);
+   console.log(response);
    reject(response);
   }
  });
@@ -89,7 +94,6 @@ function tx_parse(data){
     rec_set.receives = data.message.details.map(async function(obj){
      if(data.message.details.category==='receive'){ //remove this to also notify about sends
       let receives = {"address":obj.address, "amount":obj.amount};
-      console.log(receives);
       return (receives);
      }
     });
@@ -99,10 +103,16 @@ function tx_parse(data){
      rec_set.receives = thesereceives;
      resolve(rec_set);
     })
-    .catch((e)=>reject(e));
+    .catch((e)=>{
+     let response = errorSet.errorFunc('fail',e);
+     console.log(response);
+     reject(e));
+    });
   } 
   catch(e){
-   reject(e);
+   let response = errorSet.errorFunc('fail',e);
+   console.log(response);
+   reject(response);
   }
  });
 }
