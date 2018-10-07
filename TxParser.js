@@ -34,6 +34,7 @@ var rec_set = {
 //-o_o===node-update======================================================|
 app.post('/node-update', async (req,res)=>{
  try{
+  console.log(req.body.txid);
   tx_detail(req.body.txid)
   .then(data=>{
    if(data.receives!==[{}]||data.receives!==[]){
@@ -54,6 +55,7 @@ app.post('/node-update', async (req,res)=>{
 function tx_detail(txid){
 return new Promise((resolve,reject)=>{
  try{
+  console.log(txid);
   request.post({
    "headers":{ "content-type": "application/json" },
    "url": `${server_url}/tx_detail_local`,
@@ -65,6 +67,7 @@ return new Promise((resolve,reject)=>{
      console.log(respo);
      reject(respo);
     }
+   console.log(response);
    console.log(JSON.stringify(body));
     tx_parse(JSON.parse(body))
     .then(responso=>{
