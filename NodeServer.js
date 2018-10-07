@@ -46,7 +46,7 @@ var options = {
  },
  json: true
 };
-//-o_o===getUTxO===================================================|
+//-o_o===listunspent===================================================|
 app.post('/get_utxo', async (req,res)=>{
  try{
   options.body.id = 'GetUTxO';
@@ -65,24 +65,28 @@ app.post('/get_utxo', async (req,res)=>{
    .catch((err)=>{
     if(err.cause){
      let response = errorSet.errorFunc("fail",err.cause);
+     console.log(response);
      res.send(response);
     }
     if(err.error){
      let response = errorSet.errorFunc("fail",err.error.error.message);
+     console.log(response);
      res.send(response);
     }
     else{
      let response = errorSet.errorFunc("fail",err);
+     console.log(response);
      res.send(response);
     }
    });
  }
  catch(e){
    let response = errorSet.errorFunc("fail",e);
+   console.log(response);
    res.send(response);
  }
 });
-//-o_o===AddressGen================================================|
+//-o_o===getnewaddress================================================|
 app.post('/new_address', async (req,res)=>{
  try{
   options.body.id = 'NewAddress';
@@ -97,21 +101,25 @@ app.post('/new_address', async (req,res)=>{
    .catch((err)=>{
     if(err.cause){
      let response = errorSet.errorFunc("fail",err.cause);
+     console.log(response);
      res.send(response);
     }
     if(err.error){
      let response = errorSet.errorFunc("fail",err.error.error.message);
+     console.log(response);
      res.send(response);
     }
     else{
      let response = errorSet.errorFunc("fail",err);
+     console.log(response);
      res.send(response);
     }
    });
  }
  catch(e){
-   let response = errorSet.errorFunc("fail",e);
-   res.send(response);
+  let response = errorSet.errorFunc("fail",e);
+  console.log(response);
+  res.send(response);
  }
 });
 //-o_o===ValidateAddr===============================================|
@@ -130,21 +138,25 @@ app.post('/validate_address', async (req,res)=>{
   .catch((err)=>{
    if(err.cause){
     let response = errorSet.errorFunc('fail',err.cause);
+    console.log(response);
     res.send(response);
    }
    if(err.error){
     let response = errorSet.errorFunc('fail',err.error.error.message);
+    console.log(response);
     res.send(response);
    }
    else{
     let response = errorSet.errorFunc('fail',err);
+    console.log(response);
     res.send(response);
    }
   });
  }
  catch(e){
-   let response = errorSet.errorFunc('fail',e);
-   res.send(response);
+  let response = errorSet.errorFunc('fail',e);
+  console.log(response);
+  res.send(response);
  }
 });
 //-o_o===TxDetail-local==============================================|
@@ -165,22 +177,26 @@ app.post('/tx_detail_local', async (req,res)=>{
    if(err.cause){
     //console.log("errcause",err.cause);
     let response = errorSet.errorFunc("fail",err.cause);
+    console.log(response);
     res.send(response);
    }
    else if(err.error){
     //console.log("errerrror",err.error);
     let response = errorSet.errorFunc("fail",err.error.error.message);
+    console.log(response);
     res.send(response);
     }
    else{
     //console.log("generalerr", err);
     let response = errorSet.errorFunc("fail",err);
+    console.log(response);
     res.send(response);
    }
   });
  }
  catch(e){
   let response = errorSet.errorFunc('fail', e);
+  console.log(response);
   res.send(response);
  }
 });
@@ -197,22 +213,26 @@ app.post('/tx_detail_global', async (req,res)=>{
    await rp(options)
    .then((resp)=>{
     let response = errorSet.errorFunc('success',resp.result);
+    console.log(response);
     res.send(response);
    })
    .catch((err)=>{
     if(err.cause){
      //console.log("errcause",err.cause);
      let response = errorSet.errorFunc("fail",err.cause);
+     console.log(response);
      res.send(response);
     }
     else if(err.error){
      //console.log("errerrror",err.error);
      let response = errorSet.errorFunc("fail",err.error.error.message);
+     console.log(response);
      res.send(response);
     }
     else{
      //console.log("generalerr", err);
      let response = errorSet.errorFunc("fail",err);
+     console.log(response);
      res.send(response);
     }
    })//after awaiting rp(options)
@@ -220,20 +240,24 @@ app.post('/tx_detail_global', async (req,res)=>{
   .catch((err)=>{
    if(err.cause){
     let response = errorSet.errorFunc("fail",err.cause);
+    console.log(response);
     res.send(response);
    }
    else if(err.error){
     let response = errorSet.errorFunc("fail",err.error.error.message);
+    console.log(response);
     res.send(response);
    }
    else{
     let response = errorSet.errorFunc("fail",err);
+    console.log(response);
     res.send(response);
    }
   });
  }
  catch(e){
   let response = errorSet.errorFunc('fail', e);
+  console.log(response);
   res.send(response);
  }
 });
@@ -253,20 +277,24 @@ function raw_tx(txid){
    .catch((err)=>{
     if(err.cause){
      let response = errorSet.errorFunc("fail",err.cause);
+     console.log(response);
      reject(response);
     }
     if(err.error){
      let response = errorSet.errorFunc("fail",err.error.error.message);
+     console.log(response);
      reject(response);
     }
     else{
      let response = errorSet.errorFunc("fail",err);
+     console.log(response);
      reject(response);
     }
    });
   }
   catch(e){
    let response = errorSet.errorFunc('fail', e);
+   console.log(response);
    reject(response);
   }
  });
@@ -286,21 +314,25 @@ app.post('/broadcastx', async (req,res)=>{
   .catch((err)=>{
    if(err.cause){
     let response = errorSet.errorFunc('fail',err.cause);
+    console.log(response);
     res.send(response);
    }
    if(err.error){
     let response = errorSet.errorFunc('fail',err.error.error.message);
+    console.log(response);
     res.send(response);
    }
    else{
     let response = errorSet.errorFunc('fail',err);
+    console.log(response);
     res.send(response);
    }
   });
  }
  catch(e){
-   let response = errorSet.errorFunc('fail',e);
-   res.send(response);
+  let response = errorSet.errorFunc('fail',e);
+  console.log(response);
+  res.send(response);
  }
 });
 //-o_o===CONNECT===================================================|
