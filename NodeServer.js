@@ -271,8 +271,8 @@ function raw_tx(txid){
 
    await rp(options)
    .then((resp)=>{
-    let response = errorSet.errorFunc('success',resp.result);
-    resolve(response.message);
+    let responso = errorSet.errorFunc('success',resp.result);
+    resolve(responso.message);
    })
    .catch((err)=>{
     if(err.cause){
