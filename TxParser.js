@@ -106,7 +106,7 @@ function tx_parse(data){
     .catch((e)=>{
      let response = errorSet.errorFunc('fail',e);
      console.log(response);
-     reject(e));
+     reject(e);
     });
   } 
   catch(e){
