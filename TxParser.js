@@ -33,12 +33,12 @@ var rec_set = {
 }
 
 var options = {
-   "headers":{ "content-type": "application/JSON" },
-   "url": `${server_url}/tx_detail_local`,
-   "method": 'POST',
-   "body":{},
-   "json": true
-  }
+   headers:{ "content-type": "application/JSON" },
+   url: `${server_url}/tx_detail_local`,
+   method: 'POST',
+   body:{},
+   json: true
+}
 //-o_o===node-update======================================================|
 app.post('/node-update', async (req,res)=>{
  try{
@@ -63,9 +63,6 @@ app.post('/node-update', async (req,res)=>{
 function tx_detail(txid){
 return new Promise((resolve,reject)=>{
  try{
-  let str = "txid=";
-  let bodystring=str.concat(txid);
-  console.log(bodystring);
   options.body = {"txid":txid};
   console.log(options);
   request.post(options,
