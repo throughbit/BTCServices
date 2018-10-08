@@ -35,7 +35,7 @@ var rec_set = {
 app.post('/node-update', async (req,res)=>{
  try{
   console.log(req.body.txid);
-  tx_detail(req.body.txid)
+  tx_detail(String(req.body.txid))
   .then(data=>{
    if(data.receives!==[{}]||data.receives!==[]){
     let response = errorSet.errorFunc('success',data);
