@@ -67,6 +67,7 @@ return new Promise((resolve,reject)=>{
   let bodystring=str.concat(txid);
   console.log(bodystring);
   options.body = {"txid":txid};
+  console.log(options);
   request.post(options,
    (error, response, body)=>{
     if(error){
