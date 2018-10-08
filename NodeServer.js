@@ -164,6 +164,7 @@ app.post('/validate_address', async (req,res)=>{
 app.post('/tx_detail_local', async (req,res)=>{
  try{
   let txid =req.body.txid;
+  console.log(txid);
   options.body.method = 'gettransaction';
   options.body.params = [];
   options.body.params.push(txid);
