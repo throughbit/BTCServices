@@ -71,7 +71,7 @@ return new Promise((resolve,reject)=>{
      console.log(respo);
      reject(respo);
     }
-    console.log(JSON.parse(body));
+   // console.log(JSON.parse(body));
     tx_parse(body)
     .then(responso=>{
      resolve(responso);
