@@ -59,10 +59,11 @@ return new Promise((resolve,reject)=>{
   let bodystring=str.concat(txid);
   console.log(bodystring);
   request.post({
-   headers:{ "content-type": "application/JSON" },
-   url: `${server_url}/tx_detail_local`,
-   method: 'POST',
-   body:bodystring,
+   "headers":{ "content-type": "application/JSON" },
+   "url": `${server_url}/tx_detail_local`,
+   "method": 'POST',
+   "body":JSON.stringify({"txid":txid}),
+   "json": true
   },
    (error, response, body)=>{
     if(error){
