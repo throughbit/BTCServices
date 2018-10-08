@@ -163,7 +163,7 @@ app.post('/validate_address', async (req,res)=>{
 //Gets TxDetails for local addresses
 app.post('/tx_detail_local', async (req,res)=>{
  try{
-  let txid =req.body.txid;
+  let txid =req.body;
   console.log(txid);
   options.body.method = 'gettransaction';
   options.body.params = [];
