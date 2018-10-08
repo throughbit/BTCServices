@@ -61,7 +61,7 @@ return new Promise((resolve,reject)=>{
   request.post({
    "headers":{ "content-type": "application/JSON" },
    "url": `${server_url}/tx_detail_local`,
-   "body":{"txid":txid}
+   "body":JSON.parse({"txid":txid})
   },
    (error, response, body)=>{
     if(error){
