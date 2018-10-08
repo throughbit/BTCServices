@@ -63,7 +63,7 @@ return new Promise((resolve,reject)=>{
    url: `${server_url}/tx_detail_local`,
    method: 'POST',
    body:bodystring,
-   encoding: string
+   encoding: null
   },
    (error, response, body)=>{
     if(error){
