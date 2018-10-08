@@ -26,7 +26,7 @@ const nodeurl = `http://localhost:${NODE_PORT}`;
 var app = express();
 app.use(helmet());
 app.use(helmet.noCache());
-app.use(bodyParser.json(({ type: 'application/*+json' })))
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}));
 
 var options = {
