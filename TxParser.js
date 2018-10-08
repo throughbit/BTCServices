@@ -31,6 +31,14 @@ var rec_set = {
  "confirmations":'',
  "receives":[]
 }
+
+var options = {
+   "headers":{ "content-type": "application/JSON" },
+   "url": `${server_url}/tx_detail_local`,
+   "method": 'POST',
+   "body":{},
+   "json": true
+  }
 //-o_o===node-update======================================================|
 app.post('/node-update', async (req,res)=>{
  try{
@@ -58,13 +66,8 @@ return new Promise((resolve,reject)=>{
   let str = "txid=";
   let bodystring=str.concat(txid);
   console.log(bodystring);
-  request.post({
-   "headers":{ "content-type": "application/JSON" },
-   "url": `${server_url}/tx_detail_local`,
-   "method": 'POST',
-   "body":JSON.stringify({"txid":txid}),
-   "json": true
-  },
+  options.body = {"txid":txid};
+  request.post(options,
    (error, response, body)=>{
     if(error){
      let respo = errorSet.errorFunc('fail',error);
