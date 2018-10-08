@@ -1,0 +1,31 @@
+{
+  "name": "nodeservices",
+  "version": "1.0.0",
+  "description": "Auxillary Services for BTC-like Full Nodes",
+  "main": "NodeServer.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "helmet": "^3.13.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5",
+    "slack-node": "^0.1.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "sync"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Laziemo/NodeServices.git"
+  },
+  "keywords": [
+    "none"
+  ],
+  "author": "ThroughBit Technologies",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Laziemo/NodeServices/issues"
+  },
+  "homepage": "https://github.com/Laziemo/NodeServices#readme"
+}
