@@ -64,7 +64,6 @@ function tx_detail(txid){
 return new Promise((resolve,reject)=>{
  try{
   options.body = {"txid":txid};
-  console.log(options);
   request.post(options,
    (error, response, body)=>{
     if(error){
