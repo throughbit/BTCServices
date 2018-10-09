@@ -52,7 +52,7 @@ app.post('/node-update', async (req,res)=>{
    //This is the parsed response that can be redirected to suite your application
    if(data.receives!==[{}]||data.receives!==[]){
     let response = errorSet.errorFunc('success',data);
-    fs.writeFile("${F_PATH}","${data}\n", function(err){
+    fs.writeFile(`${F_PATH}`,`${data}\n`, function(err){
      if(err) console.log("Could not write to file: \n", err);
      else console.log("Notification logged");
     });
