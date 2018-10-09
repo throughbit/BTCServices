@@ -1,5 +1,5 @@
 /*
-Tx Parser:
+Tx Parser: used in conjunction with wallet-notify
 Developed at ThroughBit Technologies Pvt.Ltd
 HYFERx Project
 */
