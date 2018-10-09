@@ -6,19 +6,22 @@ HYFERx Project
 //-o_O==========================================================~|
 'use strict';
 //-o_o===modules=================================================|
-var request = require('request');
+const request = require('request');
+const express = require('express');
+const helmet = require('helmet');
+const bodyParser = require('body-parser');
+var fs = require('fs');
+const slack = require('./SlackNode.js');
 var errorSet = require('./errors.js');
-var express = require('express');
-var helmet = require('helmet');
-var bodyParser = require('body-parser');
-var rp = require ('request-promise-native');
-var slack = require('./SlackNode.js');
 //-o_O===init===================================================~|
-const UPD_PORT = process.env.W_UPD;
 //Server created to respond to wallet_notify
+const UPD_PORT = process.env.W_UPD;
+//NodeServer: called to aquire tx_detail
 const S_PORT = process.env.SERV;
-//Primary node interface Server called to aquire tx_detail
 const server_url = `http://localhost:${S_PORT}`;
+//Path to log file
+const F_PATH = process.env.REC_LOG;
+
 var app = express();
 
 app.use(helmet());
@@ -26,12 +29,13 @@ app.use(helmet.noCache());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
+//Object sent as a notification. 
 var rec_set = {
  "txid":'',
  "confirmations":'',
  "receives":[]
 }
-
+//Object sent to NodeServer to parse tx
 var options = {
    headers:{ "content-type": "application/JSON" },
    url: `${server_url}/tx_detail_local`,
@@ -42,15 +46,19 @@ var options = {
 //-o_o===node-update======================================================|
 app.post('/node-update', async (req,res)=>{
  try{
-  console.log(req.body.txid);
+  //console.log(req.body.txid);
   tx_detail(String(req.body.txid))
   .then(data=>{
+   //This is the parsed response that can be redirected to suite your application
    if(data.receives!==[{}]||data.receives!==[]){
     let response = errorSet.errorFunc('success',data);
+    fs.writeFile("${F_PATH}","${data}\n", function(err){
+     if(err) console.log("Could not write to file: \n", err);
+     else console.log("Notification logged");
+    });
     slack.update_slack(JSON.stringify(data),'Receive Notifier');
     res.send(response);
    }
-   //How to cancel response incase of empty receives set i.e. incase notification is for sends
   })
  }
  catch(e){
