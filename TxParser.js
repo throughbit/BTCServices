@@ -21,7 +21,7 @@ const S_PORT = process.env.SERV;
 const server_url = `http://localhost:${S_PORT}`;
 //Path to log file
 const F_PATH = process.env.REC_LOG;
-
+const log_separator = "#--------------------------------------------------------------------------------------------------------------- "
 var app = express();
 
 app.use(helmet());
@@ -53,7 +53,7 @@ app.post('/node-update', async (req,res)=>{
    //This is the parsed response that can be redirected to suite your application
    if(data.receives!==[{}]||data.receives!==[]){
     let response = errorSet.errorFunc('success',data);
-    fs.appendFile(`${F_PATH}`,`${data}\n`, function(err){
+    fs.appendFile(`${F_PATH}`,`${data}\n${log_separator}\n`, function(err){
      if(err) console.log("Could not write to file: \n", err);
      else console.log("Notification logged");
     });
