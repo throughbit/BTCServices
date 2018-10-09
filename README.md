@@ -53,6 +53,14 @@ Serving JSON-RPC to the full node for the following commands at given end points
 
 
 ## TxParse.js
+
+Called via wallet-notify to parse details of a txid regarding ONLY incoming transactions i.e. receives.
+Returns txid, confirmations, address and amount.
+
+The primary utility of this txparser is to notify the node admin about incoming transactions or receives. 
+It can be extended to support notifications for outgoing transactions by removing the section commented in the code as //remove this condition to allow send notify.
+For this reason this function has been isolated from NodeServer.js, to maintain usage of S_PORT exclusively to interface your full node. 
+
 Configure bitcoin.conf as follows:
 
 *wallet-notify = /path/to/script.sh %s*
@@ -60,12 +68,6 @@ Configure bitcoin.conf as follows:
 **%s** passes the txid to this scrpit. The script can then curl -X POST "https://localhost:PORT/node-update" -d "txid=$1"
 
 **$1** here accepts the first variable passed to the script i.e. the txid sent via wallet-notify.
-
-Called via wallet-notify to parse details of a txid regarding ONLY incoming transactions i.e. receives.
-Returns txid, confirmations, address and amount.
-
-The primary utility of this txparser is to notify the node admin about incoming transactions or receives. 
-It can be extended to support notifications for outgoing transactions by removing the section commented in the code as //remove this condition to allow send notify.
 
 
 ## SlackNode.js
@@ -97,6 +99,6 @@ Responses are created by calling:
 
 - errorFunc("success","message")
 
-eg. **{status: 0, message: "Successfully saved your shit"}**
+eg. **{status: 0, message: "Successfully saved."}**
 
 
