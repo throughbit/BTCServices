@@ -47,6 +47,7 @@ var options = {
 app.post('/node-update', async (req,res)=>{
  try{
   //console.log(req.body.txid);
+  console.log(F_PATH);
   tx_detail(String(req.body.txid))
   .then(data=>{
    //This is the parsed response that can be redirected to suite your application
