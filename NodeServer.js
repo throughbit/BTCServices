@@ -76,11 +76,11 @@ app.post('/get_utxo', async (req,res)=>{
      console.log(response);
      res.send(response);
     }
-    if(err.error){
-     let response = errorSet.errorFunc("fail",err.error);
-     console.log(response);
-     res.send(response);
-    }
+//     if(err.error){
+//      let response = errorSet.errorFunc("fail",err.error);
+//      console.log(response);
+//      res.send(response);
+//     }
     else{
      let response = errorSet.errorFunc("fail",err);
      console.log(response);
@@ -89,9 +89,9 @@ app.post('/get_utxo', async (req,res)=>{
    });
  }
  catch(e){
-   let response = errorSet.errorFunc("fail",e);
-   console.log(response);
-   res.send(response);
+  let response = errorSet.errorFunc("fail",e);
+  console.log(response);
+  res.send(response);
  }
 });
 //-o_o===getnewaddress================================================|
