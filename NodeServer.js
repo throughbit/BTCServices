@@ -52,7 +52,7 @@ app.post('/get_utxo', async (req,res)=>{
   options.body.id = 'GetUTxO';
   options.body.method = 'listunspent';
   options.body.params = [];
-  options.body.params.push(10);
+  options.body.params.push(2);
   options.body.params.push(999999);
   let addresses = req.body.addresses;
   options.body.params.push(addresses);
