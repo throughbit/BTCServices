@@ -318,7 +318,9 @@ app.post('/broadcastx', async (req,res)=>{
 
   await rp(options)
   .then((resp)=>{
-   res.send(resp);
+   let response = errorSet.errorFunc("success", resp.result);
+   console.log(response);
+   res.send(response);
   })
   .catch((err)=>{
    if(err.cause){
