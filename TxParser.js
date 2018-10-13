@@ -11,7 +11,7 @@ const express = require('express');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 var fs = require('fs');
-const slack = require('./slack_node.js');
+const slack = require('./SlackNode.js');
 var errorSet = require('./errors.js');
 //-o_O===init===================================================~|
 //Server created to respond to wallet_notify
