@@ -101,4 +101,8 @@ Responses are created by calling:
 
 eg. **{status: 0, message: "Successfully saved."}**
 
+## Updates:
+
+- complete sending of requests in errorSet format.
+- ensure that recievers handle responses correctly.
 
