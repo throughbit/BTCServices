@@ -69,7 +69,7 @@ app.post('/get_utxo', async (req,res)=>{
      res.send(response);
     }
     if(err.error){
-     let response = errorSet.errorFunc("fail",err.error.error.message);
+     let response = errorSet.errorFunc("fail",err.error);
      console.log(response);
      res.send(response);
     }
