@@ -59,8 +59,15 @@ app.post('/get_utxo', async (req,res)=>{
   
   await rp(options)
    .then((resp)=>{
+    if(resp.error==null){
     let response = errorSet.errorFunc("success",resp.result);
     res.send(response);
+    }
+    else{
+    console.log("Error response from get_utxo.\nHere is the entire response:\n",resp)
+    let response = errorSet.errorFunc("fail",resp.error);
+    res.send(response);
+    }
    })
    .catch((err)=>{
     if(err.cause){
