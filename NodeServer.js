@@ -60,9 +60,8 @@ app.post('/get_utxo', async (req,res)=>{
   await rp(options)
    .then((resp)=>{
     if(resp.error==null){
-
     let response = errorSet.errorFunc("success","Check Array", resp.result);
-    console.log("no error from /get_utxo",response);
+    console.log("Success at /get_utxo",response);
     res.send(response);
     }
     else{
@@ -105,29 +104,30 @@ app.post('/new_address', async (req,res)=>{
   await rp(options)
    .then((resp)=>{
     let response = errorSet.errorFunc("success",resp.result);
+    console.log("Success at /new_address",response);
     res.send(response);
    })
    .catch((err)=>{
     if(err.cause){
      let response = errorSet.errorFunc("fail",err.cause);
-     console.log(response);
+     console.log("Failed at /new_address",response);
      res.send(response);
     }
-    if(err.error){
-     let response = errorSet.errorFunc("fail",err.error.error.message);
-     console.log(response);
-     res.send(response);
-    }
+//     if(err.error){
+//      let response = errorSet.errorFunc("fail",err.error.error.message);
+//      console.log(response);
+//      res.send(response);
+//     }
     else{
      let response = errorSet.errorFunc("fail",err);
-     console.log(response);
+     console.log("Failed at /new_address",response);
      res.send(response);
     }
    });
  }
  catch(e){
   let response = errorSet.errorFunc("fail",e);
-  console.log(response);
+  console.log("Failed at /new_address",response);
   res.send(response);
  }
 });
@@ -142,29 +142,31 @@ app.post('/validate_address', async (req,res)=>{
 
   await rp(options)
   .then((resp)=>{
+   let response = errorSet.errorFunc('success', resp.result);
+   console.log("Success at /validate_address",response);
    res.send(resp);
   })
   .catch((err)=>{
    if(err.cause){
     let response = errorSet.errorFunc('fail',err.cause);
-    console.log(response);
+    console.log("Failed at /validate_address",response);
     res.send(response);
    }
-   if(err.error){
-    let response = errorSet.errorFunc('fail',err.error.error.message);
-    console.log(response);
-    res.send(response);
-   }
+//    if(err.error){
+//     let response = errorSet.errorFunc('fail',err.error.error.message);
+//     console.log(response);
+//     res.send(response);
+//    }
    else{
     let response = errorSet.errorFunc('fail',err);
-    console.log(response);
+    console.log("Failed at /validate_address",response);
     res.send(response);
    }
   });
  }
  catch(e){
   let response = errorSet.errorFunc('fail',e);
-  console.log(response);
+  console.log("Failed at /validate_address",response);
   res.send(response);
  }
 });
@@ -180,32 +182,33 @@ app.post('/tx_detail_local', async (req,res)=>{
   await rp(options)
   .then((resp)=>{
    let response = errorSet.errorFunc('success',resp.result);
-    res.send(response);
+   console.log("Success from /tx_detail_local",response);
+   res.send(response);
   })
   .catch((err)=>{
    if(err.cause){
     //console.log("errcause",err.cause);
     let response = errorSet.errorFunc("fail",err.cause);
-    console.log(response);
+    console.log("Fail at /tx_detail_local",response);
     res.send(response);
    }
    else if(err.error){
     //console.log("errerrror",err.error);
     let response = errorSet.errorFunc("fail",err.error.error.message);
-    console.log(response);
+    console.log("Fail at /tx_detail_local",response);
     res.send(response);
     }
    else{
     //console.log("generalerr", err);
     let response = errorSet.errorFunc("fail",err);
-    console.log(response);
+    console.log("Fail at /tx_detail_local",response);
     res.send(response);
    }
   });
  }
  catch(e){
   let response = errorSet.errorFunc('fail', e);
-  console.log(response);
+  console.log("Fail at /tx_detail_local",response);
   res.send(response);
  }
 });
@@ -215,58 +218,65 @@ app.post('/tx_detail_global', async (req,res)=>{
  try{
   raw_tx(req.body.txid)
   .then(async (hex)=>{
-   options.body.method = 'decoderawtransaction';
-   options.body.params = [];
-   options.body.params.push(hex);
-   
-   await rp(options)
-   .then((resp)=>{
-    let response = errorSet.errorFunc('success',resp.result);
-    console.log(response);
+   if(hex.status){
+    options.body.method = 'decoderawtransaction';
+    options.body.params = [];
+    options.body.params.push(hex);
+
+    await rp(options)
+    .then((resp)=>{
+     let response = errorSet.errorFunc('success',resp.result);
+     console.log("Success at /tx_detail_global",response);
+     res.send(response);
+    })
+    .catch((err)=>{
+     if(err.cause){
+      //console.log("errcause",err.cause);
+      let response = errorSet.errorFunc("fail",err.cause);
+      console.log("Fail at /tx_detail_global",response);
+      res.send(response);
+     }
+//      else if(err.error){
+//       //console.log("errerrror",err.error);
+//       let response = errorSet.errorFunc("fail",err.error.error.message);
+//       console.log(response);
+//       res.send(response);
+//      }
+     else{
+      //console.log("generalerr", err);
+      let response = errorSet.errorFunc("fail",err);
+      console.log("Fail at /tx_detail_global",response);
+      res.send(response);
+     }
+    })//after awaiting rp(options)
+   }
+   else if(!hex.status){
+    let response = errorSet.errorFunc("fail",hex.message);
+    console.log("Fail at /tx_detail_global",response);
     res.send(response);
-   })
-   .catch((err)=>{
-    if(err.cause){
-     //console.log("errcause",err.cause);
-     let response = errorSet.errorFunc("fail",err.cause);
-     console.log(response);
-     res.send(response);
-    }
-    else if(err.error){
-     //console.log("errerrror",err.error);
-     let response = errorSet.errorFunc("fail",err.error.error.message);
-     console.log(response);
-     res.send(response);
-    }
-    else{
-     //console.log("generalerr", err);
-     let response = errorSet.errorFunc("fail",err);
-     console.log(response);
-     res.send(response);
-    }
-   })//after awaiting rp(options)
+   }
   })//after fetching rawtxid
   .catch((err)=>{
    if(err.cause){
     let response = errorSet.errorFunc("fail",err.cause);
-    console.log(response);
+    console.log("Fail at /tx_detail_global",response);
     res.send(response);
    }
-   else if(err.error){
-    let response = errorSet.errorFunc("fail",err.error.error.message);
-    console.log(response);
-    res.send(response);
-   }
+//    else if(err.error){
+//     let response = errorSet.errorFunc("fail",err.error.error.message);
+//     console.log(response);
+//     res.send(response);
+//    }
    else{
     let response = errorSet.errorFunc("fail",err);
-    console.log(response);
+    console.log("Fail at /tx_detail_global",response);
     res.send(response);
    }
   });
  }
  catch(e){
   let response = errorSet.errorFunc('fail', e);
-  console.log(response);
+  console.log("Fail at /tx_detail_global",response);
   res.send(response);
  }
 });
@@ -280,30 +290,31 @@ function raw_tx(txid){
 
    await rp(options)
    .then((resp)=>{
-    let responso = errorSet.errorFunc('success',resp.result);
-    resolve(responso.message);
+    let response = errorSet.errorFunc('success',resp.result);
+    console.log("Success at raw_txid()",response);
+    resolve(response);
    })
    .catch((err)=>{
     if(err.cause){
      let response = errorSet.errorFunc("fail",err.cause);
-     console.log(response);
+     console.log("Fail at raw_txid()",response);
      reject(response);
     }
-    if(err.error){
-     let response = errorSet.errorFunc("fail",err.error.error.message);
-     console.log(response);
-     reject(response);
-    }
+//     if(err.error){
+//      let response = errorSet.errorFunc("fail",err.error.error.message);
+//      console.log("Fail at raw_txid()",response);
+//      reject(response);
+//     }
     else{
      let response = errorSet.errorFunc("fail",err);
-     console.log(response);
+     console.log("Fail at raw_txid()",response);
      reject(response);
     }
    });
   }
   catch(e){
    let response = errorSet.errorFunc('fail', e);
-   console.log(response);
+   console.log("Fail at raw_txid()",response);
    reject(response);
   }
  });
@@ -319,30 +330,30 @@ app.post('/broadcastx', async (req,res)=>{
   await rp(options)
   .then((resp)=>{
    let response = errorSet.errorFunc("success", resp.result);
-   console.log(response);
+   console.log("Success at /broadcastx",response);
    res.send(response);
   })
   .catch((err)=>{
    if(err.cause){
     let response = errorSet.errorFunc('fail',err.cause);
-    console.log(response);
+    console.log("Fail at /broadcastx",response);
     res.send(response);
    }
-   if(err.error){
-    let response = errorSet.errorFunc('fail',err.error.error.message);
-    console.log(response);
-    res.send(response);
-   }
+//    if(err.error){
+//     let response = errorSet.errorFunc('fail',err.error.error.message);
+//     console.log("Fail at /broadcastx",response);
+//     res.send(response);
+//    }
    else{
     let response = errorSet.errorFunc('fail',err);
-    console.log(response);
+    console.log("Fail at /broadcastx",response);
     res.send(response);
    }
   });
  }
  catch(e){
   let response = errorSet.errorFunc('fail',e);
-  console.log(response);
+  console.log("Fail at /broadcastx",response);
   res.send(response);
  }
 });
