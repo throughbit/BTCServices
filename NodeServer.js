@@ -60,6 +60,7 @@ app.post('/get_utxo', async (req,res)=>{
   await rp(options)
    .then((resp)=>{
     if(resp.error==null){
+    console.log("no error from /get_utxo",resp.result);
     let response = errorSet.errorFunc("success",resp.result);
     res.send(response);
     }
