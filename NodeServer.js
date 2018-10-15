@@ -8,6 +8,13 @@ although no harm done without input sanitization:-
 nothing you could pass instead of txid/hex/address that would compromise the interface or the underlying node.
 -Review of error handling
 -Review of aync behaviour
+
+Responses Format from node: 
+{
+"result":
+"error":
+"id":
+}
 */
 //-<..>===========================================================~|
 'use strict';
@@ -103,9 +110,16 @@ app.post('/new_address', async (req,res)=>{
 
   await rp(options)
    .then((resp)=>{
-    let response = errorSet.errorFunc("success",resp.result);
-    console.log("Success at /new_address",response);
-    res.send(response);
+    if(resp.error==null){
+     let response = errorSet.errorFunc("success",resp);
+     console.log("Success at /new_address",response);
+     res.send(response);
+    }
+    else{
+     let response = errorSet.errorFunc("fail", resp);
+     console.log("Fail at /new_address",response);
+     res.send(response);
+    }
    })
    .catch((err)=>{
     if(err.cause){
