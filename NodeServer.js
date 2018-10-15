@@ -109,7 +109,7 @@ app.post('/new_address', async (req,res)=>{
    })
    .catch((err)=>{
     if(err.cause){
-     let response = errorSet.errorFunc("fail",err.message.message);
+     let response = errorSet.errorFunc("fail",err.cause);
      console.log("Failed at /new_address",err);
      res.send(response);
     }
@@ -119,7 +119,7 @@ app.post('/new_address', async (req,res)=>{
 //      res.send(response);
 //     }
     else{
-     let response = errorSet.errorFunc("fail",err);
+     let response = errorSet.errorFunc("fail",err.message.message);
      console.log("Failed at /new_address",response);
      res.send(response);
     }
