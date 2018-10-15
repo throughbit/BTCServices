@@ -82,7 +82,7 @@ app.post('/get_utxo', async (req,res)=>{
 //      res.send(response);
 //     }
     else{
-     let response = errorSet.errorFunc("fail",err);
+     let response = errorSet.errorFunc("fail",err.message);
      console.log(response);
      res.send(response);
     }
@@ -158,7 +158,7 @@ app.post('/validate_address', async (req,res)=>{
 //     res.send(response);
 //    }
    else{
-    let response = errorSet.errorFunc('fail',err);
+    let response = errorSet.errorFunc('fail',err.message);
     console.log("Failed at /validate_address",response);
     res.send(response);
    }
@@ -200,7 +200,7 @@ app.post('/tx_detail_local', async (req,res)=>{
     }
    else{
     //console.log("generalerr", err);
-    let response = errorSet.errorFunc("fail",err);
+    let response = errorSet.errorFunc("fail",err.message);
     console.log("Fail at /tx_detail_local",response);
     res.send(response);
    }
@@ -244,7 +244,7 @@ app.post('/tx_detail_global', async (req,res)=>{
 //      }
      else{
       //console.log("generalerr", err);
-      let response = errorSet.errorFunc("fail",err);
+      let response = errorSet.errorFunc("fail",err.message);
       console.log("Fail at /tx_detail_global",response);
       res.send(response);
      }
@@ -268,7 +268,7 @@ app.post('/tx_detail_global', async (req,res)=>{
 //     res.send(response);
 //    }
    else{
-    let response = errorSet.errorFunc("fail",err);
+    let response = errorSet.errorFunc("fail",err.message);
     console.log("Fail at /tx_detail_global",response);
     res.send(response);
    }
@@ -306,7 +306,7 @@ function raw_tx(txid){
 //      reject(response);
 //     }
     else{
-     let response = errorSet.errorFunc("fail",err);
+     let response = errorSet.errorFunc("fail",err.message);
      console.log("Fail at raw_txid()",response);
      reject(response);
     }
@@ -345,7 +345,7 @@ app.post('/broadcastx', async (req,res)=>{
 //     res.send(response);
 //    }
    else{
-    let response = errorSet.errorFunc('fail',err);
+    let response = errorSet.errorFunc('fail',err.message);
     console.log("Fail at /broadcastx",response);
     res.send(response);
    }
