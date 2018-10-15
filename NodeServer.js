@@ -119,7 +119,7 @@ app.post('/new_address', async (req,res)=>{
 //      res.send(response);
 //     }
     else{
-     let response = errorSet.errorFunc("fail",err.message.message);
+     let response = errorSet.errorFunc("fail",err.message);
      console.log("Failed at /new_address",response);
      res.send(response);
     }
