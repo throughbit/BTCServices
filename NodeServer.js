@@ -109,7 +109,7 @@ app.post('/new_address', async (req,res)=>{
    })
    .catch((err)=>{
     if(err.cause){
-     let response = errorSet.errorFunc("fail",err.cause);
+     let response = errorSet.errorFunc("fail",err.message);
      console.log("Failed at /new_address",err);
      res.send(response);
     }
