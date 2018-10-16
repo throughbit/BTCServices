@@ -2,14 +2,12 @@
 Node Server
 Developed at ThroughBit Technologies Pvt. Ltd.
 HYFERx Project
-Requires: 
--Input checks: 
-although no harm done without input sanitization:-
-nothing you could pass instead of txid/hex/address that would compromise the interface or the underlying node.
+Requires:
+-Input checks:
 -Review of error handling
 -Review of aync behaviour
 
-Responses Format from node: 
+Responses Format from node:
 {
 "result":
 "error":
@@ -19,11 +17,12 @@ Responses Format from node:
 //-<..>===========================================================~|
 'use strict';
 //-o_o===modules===================================================|
-var errorSet = require('./errors.js');
-var express = require('express');
-var helmet = require('helmet');
-var bodyParser = require('body-parser');
-var rp = require ('request-promise-native');
+const errorSet = require('./errors.js');
+
+const express = require('express');
+const helmet = require('helmet');
+const bodyParser = require('body-parser');
+const rp = require ('request-promise-native');
 //-o_o===init======================================================|
 const S_PORT = process.env.SERV;
 const NODE_PORT = process.env.NODE;
@@ -33,7 +32,7 @@ const nodeurl = `http://localhost:${NODE_PORT}`;
 var app = express();
 app.use(helmet());
 app.use(helmet.noCache());
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
 var options = {
@@ -63,12 +62,12 @@ app.post('/get_utxo', async (req,res)=>{
   options.body.params.push(999999);
   let addresses = req.body.addresses;
   options.body.params.push(addresses);
-  
+
   await rp(options)
    .then((resp)=>{
     if(resp.error==null){
     let response = errorSet.errorFunc("success","Check Array", resp.result);
-    console.log("Success at /get_utxo",response);
+    console.log("Success at /get_utxo\n",response);
     res.send(response);
     }
     else{
@@ -79,25 +78,32 @@ app.post('/get_utxo', async (req,res)=>{
    })
    .catch((err)=>{
     if(err.cause){
+     if(err.cause.code==="ECONNREFUSED"){
+      //slack notify?
+      let response = errorSet.errorFunc("fail","Error: Daemon not running.");
+      console.log("Caught at /get_utxo\n", response);
+      res.status(500).send(response);//does res.status(500) send response back under error?
+     }
      let response = errorSet.errorFunc("fail",err.cause);
-     console.log(response);
+     console.log("Err with cause at /get_utxo\n",response);
      res.send(response);
     }
+
 //     if(err.error){
 //      let response = errorSet.errorFunc("fail",err.error);
 //      console.log(response);
 //      res.send(response);
 //     }
     else{
-     let response = errorSet.errorFunc("fail",err.message);
-     console.log(response);
+     let response = errorSet.errorFunc("fail","",[],err);
+     console.log("Err at /get_utxo\n",response);
      res.send(response);
     }
    });
  }
  catch(e){
   let response = errorSet.errorFunc("fail",e);
-  console.log(response);
+  console.log("Failed at /get_utxo, final catch\n", response);
   res.send(response);
  }
 });
@@ -111,20 +117,25 @@ app.post('/new_address', async (req,res)=>{
   await rp(options)
    .then((resp)=>{
     if(resp.error==null){
-     let response = errorSet.errorFunc("success",resp);
-     console.log("Success at /new_address",response);
+     let response = errorSet.errorFunc("success",resp.result);
+     console.log("Success at /new_address\n",response);
      res.send(response);
     }
     else{
-     let response = errorSet.errorFunc("fail", resp);
-     console.log("Fail at /new_address",response);
+     let response = errorSet.errorFunc("fail", resp.result);
+     console.log("Fail at /new_address\n",response);
      res.send(response);
     }
    })
    .catch((err)=>{
     if(err.cause){
+     if(err.cause.code==="ECONNREFUSED"){
+      let response = errorSet.errorFunc("fail","Error: Daemon not running.");
+      console.log("Caught at /new_address\n", response);
+      res.status(500).send(response);//does res.status(500) send response back under error?
+     }
      let response = errorSet.errorFunc("fail",err.cause);
-     console.log("Failed at /new_address",err);
+     console.log("Failed at /new_address with .cause \n",err);
      res.send(response);
     }
 //     if(err.error){
@@ -134,14 +145,14 @@ app.post('/new_address', async (req,res)=>{
 //     }
     else{
      let response = errorSet.errorFunc("fail",err.message);
-     console.log("Failed at /new_address",response);
+     console.log("Failed at /new_address\n",response);
      res.send(response);
     }
    });
  }
  catch(e){
   let response = errorSet.errorFunc("fail",e);
-  console.log("Failed at /new_address",response);
+  console.log("Failed at /new_address, final catch\n",response);
   res.send(response);
  }
 });
@@ -156,14 +167,19 @@ app.post('/validate_address', async (req,res)=>{
 
   await rp(options)
   .then((resp)=>{
-   let response = errorSet.errorFunc('success', resp.result);
-   console.log("Success at /validate_address",response);
-   res.send(resp);
+   let response = errorSet.errorFunc('success',resp.result);
+   console.log("Success at /validate_address\n",response);
+   res.send(response);
   })
   .catch((err)=>{
    if(err.cause){
+    if(err.cause.code==="ECONNREFUSED"){
+     let response = errorSet.errorFunc("fail","Error: Daemon not running.");
+     console.log("Caught at /validate\n", response);
+     res.status(500).send(response);//does res.status(500) send response back under error?
+    }
     let response = errorSet.errorFunc('fail',err.cause);
-    console.log("Failed at /validate_address",response);
+    console.log("Failed at /validate_address with .cause\n",response);
     res.send(response);
    }
 //    if(err.error){
@@ -173,14 +189,14 @@ app.post('/validate_address', async (req,res)=>{
 //    }
    else{
     let response = errorSet.errorFunc('fail',err.message);
-    console.log("Failed at /validate_address",response);
+    console.log("Failed at /validate_address\n",response);
     res.send(response);
    }
   });
  }
  catch(e){
   let response = errorSet.errorFunc('fail',e);
-  console.log("Failed at /validate_address",response);
+  console.log("Failed at /validate_address, final catch\n",response);
   res.send(response);
  }
 });
@@ -192,37 +208,42 @@ app.post('/tx_detail_local', async (req,res)=>{
   options.body.method = 'gettransaction';
   options.body.params = [];
   options.body.params.push(txid);
-  
+
   await rp(options)
   .then((resp)=>{
    let response = errorSet.errorFunc('success',resp.result);
-   console.log("Success from /tx_detail_local",response);
+   console.log("Success from /tx_detail_local\n",response);
    res.send(response);
   })
   .catch((err)=>{
    if(err.cause){
     //console.log("errcause",err.cause);
+    if(err.cause.code==="ECONNREFUSED"){
+     let response = errorSet.errorFunc("fail","Error: Daemon not running.");
+     console.log("Caught at /tx_detail_local\n", response);
+     res.status(500).send(response);//does res.status(500) send response back under error?
+    }
     let response = errorSet.errorFunc("fail",err.cause);
-    console.log("Fail at /tx_detail_local",response);
+    console.log("Fail at /tx_detail_local with .cause\n",response);
     res.send(response);
    }
-   else if(err.error){
-    //console.log("errerrror",err.error);
-    let response = errorSet.errorFunc("fail",err.error.error.message);
-    console.log("Fail at /tx_detail_local",response);
-    res.send(response);
-    }
+   // else if(err.error){
+   //  //console.log("errerrror",err.error);
+   //  let response = errorSet.errorFunc("fail",err.error.error.message);
+   //  console.log("Fail at /tx_detail_local",response);
+   //  res.send(response);
+   //  }
    else{
     //console.log("generalerr", err);
     let response = errorSet.errorFunc("fail",err.message);
-    console.log("Fail at /tx_detail_local",response);
+    console.log("Fail at /tx_detail_local\n",response);
     res.send(response);
    }
   });
- }
+ }//closingtry
  catch(e){
   let response = errorSet.errorFunc('fail', e);
-  console.log("Fail at /tx_detail_local",response);
+  console.log("Fail at /tx_detail_local, final catch\n",response);
   res.send(response);
  }
 });
@@ -230,24 +251,31 @@ app.post('/tx_detail_local', async (req,res)=>{
 app.post('/tx_detail_global', async (req,res)=>{
 //Gets TxDetails for any transaction on the network
  try{
-  raw_tx(req.body.txid)
+  let txid =req.body.txid;
+
+  raw_tx(txid)
   .then(async (hex)=>{
    if(hex.status){
     options.body.method = 'decoderawtransaction';
     options.body.params = [];
-    options.body.params.push(hex);
+    options.body.params.push(hex.message);
 
     await rp(options)
     .then((resp)=>{
      let response = errorSet.errorFunc('success',resp.result);
-     console.log("Success at /tx_detail_global",response);
+     console.log("Success at /tx_detail_global\n",response);
      res.send(response);
     })
     .catch((err)=>{
      if(err.cause){
+      if(err.cause.code==="ECONNREFUSED"){
+       let response = errorSet.errorFunc("fail","Error: Daemon not running.");
+       console.log("Caught at /tx_detail_global\n", response);
+       res.status(500).send(response);//does res.status(500) send response back under error?
+      }
       //console.log("errcause",err.cause);
       let response = errorSet.errorFunc("fail",err.cause);
-      console.log("Fail at /tx_detail_global",response);
+      console.log("Fail at /tx_detail_global with .cause\n",response);
       res.send(response);
      }
 //      else if(err.error){
@@ -258,22 +286,22 @@ app.post('/tx_detail_global', async (req,res)=>{
 //      }
      else{
       //console.log("generalerr", err);
-      let response = errorSet.errorFunc("fail",err.message);
-      console.log("Fail at /tx_detail_global",response);
+      let response = errorSet.errorFunc("fail",err);
+      console.log("Fail at /tx_detail_global\n",response);
       res.send(response);
      }
     })//after awaiting rp(options)
    }
    else if(!hex.status){
     let response = errorSet.errorFunc("fail",hex.message);
-    console.log("Fail at /tx_detail_global",response);
+    console.log("Fail at /tx_detail_global, !hex.status\n",response);
     res.send(response);
    }
   })//after fetching rawtxid
   .catch((err)=>{
    if(err.cause){
     let response = errorSet.errorFunc("fail",err.cause);
-    console.log("Fail at /tx_detail_global",response);
+    console.log("Fail at /tx_detail_global with .cause\n",response);
     res.send(response);
    }
 //    else if(err.error){
@@ -282,15 +310,15 @@ app.post('/tx_detail_global', async (req,res)=>{
 //     res.send(response);
 //    }
    else{
-    let response = errorSet.errorFunc("fail",err.message);
-    console.log("Fail at /tx_detail_global",response);
+    let response = errorSet.errorFunc("fail",err.message);//raw_tx returns errorSet response
+    console.log("Fail at /tx_detail_global\n",response);
     res.send(response);
    }
   });
  }
  catch(e){
   let response = errorSet.errorFunc('fail', e);
-  console.log("Fail at /tx_detail_global",response);
+  console.log("Fail at /tx_detail_global, final catch\n",response);
   res.send(response);
  }
 });
@@ -305,13 +333,18 @@ function raw_tx(txid){
    await rp(options)
    .then((resp)=>{
     let response = errorSet.errorFunc('success',resp.result);
-    console.log("Success at raw_txid()",response);
+    console.log("Success at raw_txid()\n",response);
     resolve(response);
    })
    .catch((err)=>{
     if(err.cause){
+     if(err.cause.code==="ECONNREFUSED"){
+      let response = errorSet.errorFunc("fail","Error: Daemon not running.");
+      console.log("Caught at raw_tx()\n", response);
+      res.status(500).send(response);//does res.status(500) send response back under error?
+     }
      let response = errorSet.errorFunc("fail",err.cause);
-     console.log("Fail at raw_txid()",response);
+     console.log("Fail at raw_txid(), with .cause\n",response);
      reject(response);
     }
 //     if(err.error){
@@ -321,14 +354,14 @@ function raw_tx(txid){
 //     }
     else{
      let response = errorSet.errorFunc("fail",err.message);
-     console.log("Fail at raw_txid()",response);
+     console.log("Fail at raw_txid()\n",response);
      reject(response);
     }
    });
   }
   catch(e){
-   let response = errorSet.errorFunc('fail', e);
-   console.log("Fail at raw_txid()",response);
+   let response = errorSet.errorFunc('fail',e,[], e);
+   console.log("Fail at raw_txid(), final catch\n",response);
    reject(response);
   }
  });
@@ -344,13 +377,18 @@ app.post('/broadcastx', async (req,res)=>{
   await rp(options)
   .then((resp)=>{
    let response = errorSet.errorFunc("success", resp.result);
-   console.log("Success at /broadcastx",response);
+   console.log("Success at /broadcastx\n",response);
    res.send(response);
   })
   .catch((err)=>{
    if(err.cause){
+    if(err.cause.code==="ECONNREFUSED"){
+     let response = errorSet.errorFunc("fail","Error: Daemon not running.");
+     console.log("Caught at /broadcastx\n", response);
+     res.status(500).send(response);//does res.status(500) send response back under error?
+    }
     let response = errorSet.errorFunc('fail',err.cause);
-    console.log("Fail at /broadcastx",response);
+    console.log("Fail at /broadcastx, with .cause\n",response);
     res.send(response);
    }
 //    if(err.error){
@@ -360,14 +398,14 @@ app.post('/broadcastx', async (req,res)=>{
 //    }
    else{
     let response = errorSet.errorFunc('fail',err.message);
-    console.log("Fail at /broadcastx",response);
+    console.log("Fail at /broadcastx\n",response);
     res.send(response);
    }
   });
  }
  catch(e){
   let response = errorSet.errorFunc('fail',e);
-  console.log("Fail at /broadcastx",response);
+  console.log("Fail at /broadcastx, final catch\n",response);
   res.send(response);
  }
 });

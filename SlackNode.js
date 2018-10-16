@@ -20,11 +20,10 @@ function update_slack(data,title){
   icon_emoji: ":ghost:",
   text: data
   }, function(err, response) {
-  console.log(response);
-  if (response.status=='ok') return 1;
+  if (response)  console.log("Slacker says: ", response);
+  if (err) console.log("Slacker says: ", err);
  });
 }
 //-o_o===exports=====================================================|
 module.exports={update_slack};
 //-o_o===fin=====================================================|
-

@@ -6,13 +6,14 @@ HYFERx Project
 //-o_O==========================================================~|
 'use strict';
 //-o_o===modules=================================================|
+const errorSet = require('./errors.js');
+const slack = require('./SlackNode.js');
+const loggit = require('./logs.js');
+
 const request = require('request');
 const express = require('express');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
-var fs = require('fs');
-const slack = require('./SlackNode.js');
-var errorSet = require('./errors.js');
 //-o_O===init===================================================~|
 //Server created to respond to wallet_notify
 const UPD_PORT = process.env.W_UPD;
@@ -20,8 +21,7 @@ const UPD_PORT = process.env.W_UPD;
 const S_PORT = process.env.SERV;
 const server_url = `http://localhost:${S_PORT}`;
 //Path to log file
-const F_PATH = process.env.REC_LOG;
-const log_separator = "#--------------------------------------------------------------------------------------------------------------- "
+
 var app = express();
 
 app.use(helmet());
@@ -29,12 +29,8 @@ app.use(helmet.noCache());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
-//Object sent as a notification. 
-var rec_set = {
- "txid":'',
- "confirmations":'',
- "receives":[]
-}
+//Object sent as a notification.
+
 //Object sent to NodeServer to parse tx
 var options = {
    headers:{ "content-type": "application/JSON" },
@@ -43,28 +39,38 @@ var options = {
    body:{},
    json: true
 }
-//-o_o===node-update======================================================|
-app.post('/node-update', async (req,res)=>{
+//-o_o===node-update==============================================|
+//curled by wallet-notify
+app.post('/node-update', (req,res)=>{
  try{
   //console.log(req.body.txid);
-  console.log(F_PATH);
-  tx_detail(String(req.body.txid))
-  .then(data=>{
+  tx_detail(req.body.txid)
+  .then((data)=>{
+   //console.log("Tx_details, fetched and parsed: \n",data.receives);
    //This is the parsed response that can be redirected to suite your application
-   if(data.receives!==[{}]||data.receives!==[]){
+   if(data.receives){
     let response = errorSet.errorFunc('success',data);
-    fs.appendFile(`${F_PATH}`,`${JSON.stringify(data,null,1)}\n${log_separator}\n`, function(err){
-     if(err) console.log("Could not write to file: \n", err);
-     else console.log("Notification logged");
-    });
+    console.log("here?",response);
+    loggit.write_rec_log(true, data);
     slack.update_slack(JSON.stringify(data),'Receive Notifier');
     res.send(response);
    }
+   else {
+    let response =  errorSet.errorFunc('fail', "Txid Has no wallet receives.");
+    console.log("Receives came back  empty at  /node-update",response);
+    res.send(response);
+   }
   })
+  .catch((err)=>{
+   let response = errorSet.errorFunc("fail",err.message);
+   console.log("Caught at /node-update",response);
+   res.send(response);
+  });
  }
  catch(e){
   let response = errorSet.errorFunc("fail",e);
-  console.log(response);
+  loggit.write_rec_log(false,req.body.txid);
+  console.log("Caught at /node-update, final catch",response);
   res.send(response);
  }
 });
@@ -77,24 +83,32 @@ return new Promise((resolve,reject)=>{
    (error, response, body)=>{
     if(error){
      let respo = errorSet.errorFunc('fail',error);
-     console.log(respo);
+     console.log("Error in response from tx_detail request",respo);
      reject(respo);
     }
-   // console.log(JSON.parse(body));
-    tx_parse(body)
+   console.log(body);
+   if(body.status){
+    tx_parse(body.message)
     .then(responso=>{
+     console.log("Responso back from tx_parse.\n",responso);
      resolve(responso);
     })
-    .catch(err=>{
-     let responso = errorSet.errorFunc('fail',err);
-     console.log(responso);
+    .catch((err)=>{
+     let responso = errorSet.errorFunc('fail',err.message);
+     console.log("Caught at tx_detail().",responso);
      reject(responso);
     })
+   }
+   else { //tx_detail_local could send back a response that arrives as a body and carries an error
+    let response = errorSet.errorFunc('fail',body.message);
+    console.log("error in response received at /tx_detail of TxParser",response);
+    reject(response);
+   }
    });
   }
   catch(e){
    let response = errorSet.errorFunc('fail', e);
-   console.log(response);
+   console.log("Caught at tx_detail()",response);
    reject(response);
   }
  });
@@ -103,31 +117,40 @@ return new Promise((resolve,reject)=>{
 function tx_parse(data){
  return new Promise(async (resolve,reject)=>{
   try{
-    rec_set.txid = data.message.txid;
-    rec_set.confirmations = data.message.confirmations;
-    rec_set.receives = [];
-    console.log("The data to parse: ", data.message.details);
-    rec_set.receives = data.message.details.map(async function(obj){
-     if(obj.category=='receive'){ //remove this to also notify about sends
-      let receives = {"address":obj.address, "amount":obj.amount};
-      return (receives);
-     }
-    });
-   
-    await Promise.all(rec_set.receives)
-    .then((thesereceives)=>{
-     rec_set.receives = thesereceives;
-     resolve(rec_set);
-    })
-    .catch((e)=>{
-     let response = errorSet.errorFunc('fail',e);
-     console.log(response);
-     reject(e);
-    });
-  } 
+   var rec_set = {
+    "txid":'',
+    "confirmations":'',
+    "receives":[]
+   }
+   rec_set.txid = data.txid;
+   rec_set.confirmations = data.confirmations;
+   console.log("The data to parse: ", data.details);
+   rec_set.receives = data.details.map(async function(obj){
+    //if(obj.category==='receive'){ //remove this to also notify about sends
+    let receives = [];
+    //console.log(obj.address);
+    return ({"category": obj.category, "address":obj.address, "amount":obj.amount});
+    //return (receives);
+    //}
+   });
+
+   await Promise.all(rec_set.receives)
+   .then((thesereceives)=>{
+    //rec_set.receives = thesereceives;
+    rec_set.receives = thesereceives;
+    console.log(rec_set.receives);
+    console.log(rec_set);
+    resolve(rec_set);
+   })
+   .catch((e)=>{
+    let response = errorSet.errorFunc('fail',e);
+    console.log("Caught at tx_parse\n",response);
+    reject(e);
+   });
+  }
   catch(e){
    let response = errorSet.errorFunc('fail',e);
-   console.log(response);
+   console.log("Caught at tx_parse, final try.\n",response);
    reject(response);
   }
  });
@@ -137,4 +160,3 @@ app.listen(UPD_PORT,()=>
  console.log(`Wallet Update Server running on port ${UPD_PORT}`)
 );
 //-o_o===fin==================================================|
-
