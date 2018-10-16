@@ -85,7 +85,7 @@ Set environement variable Slack_Weburi to attack your own Slack Webhook.
 
 errors defines a format for passing responses. All responses follow the format: 
 
-**{status:" ", message:" "}**
+**{status:true/false, message:" ", message_array: [], message_object:{}}**
 
 status 0 = Fail / False
 
@@ -100,7 +100,7 @@ Responses are created by calling:
 
 - errorFunc("success","message")
 
-eg. **{status: 0, message: "Successfully saved."}**
+eg. **{status: true, message: "Successfully saved.", message_array:[], message_object:{}}**
 
 ## Updates:
 
