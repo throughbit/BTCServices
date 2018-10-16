@@ -6,10 +6,11 @@ A basic node interface for BTC forked crypto-networks like DGB, VTC, DOGE etc., 
 To get up an running:
 
 initialize environment variables for:
- - **NODE_PORT** : local node's rpcport 
- - **S_PORT** : the port on which this interface will run 
+ - **NODE** : local node's rpcport 
+ - **SERV** : the port on which this interface will run 
  - **W_UPD** : a port for wallet-notify updates
  - **RPC_AUTH** : the local node's rpcuser:rpcpassword encoded in Base64
+ - **REC_LOG** : path to receives.log
  
  **Usage**
  
@@ -84,7 +85,7 @@ Set environement variable Slack_Weburi to attack your own Slack Webhook.
 
 errors defines a format for passing responses. All responses follow the format: 
 
-**{status:" ", message:" "}**
+**{status:true/false, message:" ", message_array: [], message_object:{}}**
 
 status 0 = Fail / False
 
@@ -99,7 +100,7 @@ Responses are created by calling:
 
 - errorFunc("success","message")
 
-eg. **{status: 0, message: "Successfully saved."}**
+eg. **{status: true, message: "Successfully saved.", message_array:[], message_object:{}}**
 
 ## Updates:
 
