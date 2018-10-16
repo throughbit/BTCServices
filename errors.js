@@ -6,7 +6,7 @@ HYFERx Project
 //-o_O============================================================~|
 'use strict';
 
-function errorFunc(type,msg,msg_arr){
+function errorFunc(type,msg,msg_arr,msg_obj){
 
  var fail_response = {
  "status": false,
@@ -25,6 +25,7 @@ function errorFunc(type,msg,msg_arr){
   let response = fail_response;
   response.message = msg;
   response.message_array = msg_arr;
+  response.message_object= msg_obj;
   return response;
  }
 
@@ -32,6 +33,7 @@ function errorFunc(type,msg,msg_arr){
   let response = success_response;
   response.message = msg;
   response.message_array = msg_arr;
+  response.message_object= msg_obj;
   return response;
  }
 

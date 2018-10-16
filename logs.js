@@ -8,6 +8,7 @@ function write_rec_log(status,data){
 //status is a bool
 //data is an object or a single txid for fail cases
  const time = new Date().getTime();
+
  var log_separator = "#--------------------------------------------------------------------------------------------------------------- ";
 //--------------------------------------------------------------------
  if(status){
@@ -17,7 +18,7 @@ function write_rec_log(status,data){
    "message": "Received Payments.",
    "txid": data.txid,
    "confirmations":data.confirmations,
-   "receives": data.receives,
+   "tx_details": data.tx_details,
   }
 
   fs.appendFile(`${F_PATH}`,`${JSON.stringify(s_log,null,1)}\n${log_separator}\n`, function(err){
@@ -28,7 +29,7 @@ function write_rec_log(status,data){
 //--------------------------------------------------------------------
  else{
   const f_log={
-   "time":time,
+   "time":new Date(unix_timestamp * 1000).format('h:i:s'),
    "status": "fail",
    "message":`Error in reading receives`,
    "txid": data

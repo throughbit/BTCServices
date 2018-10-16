@@ -1,7 +1,7 @@
 /*
-Tx Parser: used in conjunction with wallet-notify
 Developed at ThroughBit Technologies Pvt.Ltd
 HYFERx Project
+Tx Parser: used in conjunction with wallet-notify
 */
 //-o_O==========================================================~|
 'use strict';
@@ -41,18 +41,19 @@ var options = {
 }
 //-o_o===node-update==============================================|
 //curled by wallet-notify
-app.post('/node-update', (req,res)=>{
+app.post('/node_update', (req,res)=>{
  try{
   //console.log(req.body.txid);
   tx_detail(req.body.txid)
   .then((data)=>{
    //console.log("Tx_details, fetched and parsed: \n",data.receives);
    //This is the parsed response that can be redirected to suite your application
-   if(data.receives){
+   if(data.tx_details){
     let response = errorSet.errorFunc('success',data);
     console.log("here?",response);
     loggit.write_rec_log(true, data);
     slack.update_slack(JSON.stringify(data),'Receive Notifier');
+    //notify orderbook
     res.send(response);
    }
    else {
@@ -120,26 +121,23 @@ function tx_parse(data){
    var rec_set = {
     "txid":'',
     "confirmations":'',
-    "receives":[]
+    "tx_details":[]
    }
    rec_set.txid = data.txid;
    rec_set.confirmations = data.confirmations;
    console.log("The data to parse: ", data.details);
-   rec_set.receives = data.details.map(async function(obj){
+   rec_set.tx_details = data.details.map(async function(obj){
     //if(obj.category==='receive'){ //remove this to also notify about sends
-    let receives = [];
     //console.log(obj.address);
     return ({"category": obj.category, "address":obj.address, "amount":obj.amount});
     //return (receives);
     //}
    });
 
-   await Promise.all(rec_set.receives)
-   .then((thesereceives)=>{
-    //rec_set.receives = thesereceives;
-    rec_set.receives = thesereceives;
-    console.log(rec_set.receives);
-    console.log(rec_set);
+   await Promise.all(rec_set.tx_details)
+   .then((details)=>{
+    rec_set.tx_details = details;
+    //console.log("receives formatted:",rec_set);
     resolve(rec_set);
    })
    .catch((e)=>{
