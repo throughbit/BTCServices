@@ -404,6 +404,51 @@ app.post('/broadcastx', async (req,res)=>{
   res.send(response);
  }
 });
+//-o_o===ImportAddress=================================================|
+app.post('/import_address', async (req,res)=>{
+ try{
+  options.body.id='ImportAddress';
+  options.body.method='importaddress';
+  options.body.params = [];
+  options.body.params.push(req.body.address);
+  console.log("Processing your request. This will take a few minutes.")
+  await rp(options)
+  .then((resp)=>{
+   let response = errorSet.errorFunc("success", `${options.body.params} is imported to your node.`);
+   console.log("Success at /import_address.\n",response);
+   res.send(response);
+  })
+  .catch((err)=>{
+   if(err.cause){
+    if(err.cause.code==="ECONNREFUSED"){
+     let response = errorSet.errorFunc("fail","Error: Daemon not running.");
+     console.log("Caught at /import_address\n", response);
+     res.send(response);//does res.status(500) send response back under error?
+    }
+    else{
+    let response = errorSet.errorFunc('fail',err.cause);
+    console.log("Fail at /import_address, with .cause\n",response);
+    res.send(response);
+   }
+   }
+//    if(err.error){
+//     let response = errorSet.errorFunc('fail',err.error.error.message);
+//     console.log("Fail at /import_address",response);
+//     res.send(response);
+//    }
+   else{
+    let response = errorSet.errorFunc('fail',err.error.error.message);
+    console.log("Fail at /import_address\n",response);
+    res.send(response);
+   }
+  });
+ }
+ catch(e){
+  let response = errorSet.errorFunc('fail',e);
+  console.log("Fail at /import_address, final catch\n",response);
+  res.send(response);
+ }
+});
 //-o_o===CONNECT===================================================|
 app.listen(S_PORT,()=>
  console.log(`Node Server running on port ${S_PORT}`)
