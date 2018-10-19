@@ -2,7 +2,7 @@
   "name": "nodeservices",
   "version": "1.0.0",
   "description": "Auxillary Services for BTC-like Full Nodes",
-  "main": "NodeServer.js",
+  "main": "interface.js",
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.3",

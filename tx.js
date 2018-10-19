@@ -7,7 +7,7 @@ Tx Parser: used in conjunction with wallet-notify
 'use strict';
 //-o_o===modules=================================================|
 const errorSet = require('./errors.js');
-const slack = require('./SlackNode.js');
+const slack = require('./slack.js');
 const loggit = require('./logs.js');
 
 const request = require('request');
