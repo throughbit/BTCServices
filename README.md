@@ -36,7 +36,7 @@ It is recommended that the user of these modules futher obfuscate sensitive data
 
 **If you have any recommendations on best practices for storing authentication tokens on a server, please leave a message :)**
 
-## NodeServer.js
+## interface.js
 
 Serving JSON-RPC to the full node for the following commands at given end points:
 
@@ -53,7 +53,7 @@ Serving JSON-RPC to the full node for the following commands at given end points
 - **sendrawtransaction** @ curl -X POST "http://localhost:PORT/broadcastx" -d “hex=insert-txhex”
 
 
-## TxParse.js
+## tx.js
 
 Called via wallet-notify to parse details of a txid regarding ONLY incoming transactions i.e. receives.
 Returns txid, confirmations, address and amount.
@@ -71,7 +71,7 @@ Configure bitcoin.conf as follows:
 **$1** here accepts the first variable passed to the script i.e. the txid sent via wallet-notify.
 
 
-## SlackNode.js
+## slack.js
 
 General purpose slack notifier. Takes two arguments: *(data,title)*:
 
@@ -81,29 +81,20 @@ General purpose slack notifier. Takes two arguments: *(data,title)*:
 
 Set environement variable Slack_Weburi to attack your own Slack Webhook.
 
-## errors.js
+## response_format.js
 
 errors defines a format for passing responses. All responses follow the format: 
 
-**{status:true/false, message:" ", message_array: [], message_object:{}}**
-
-status 0 = Fail / False
-
-status 1 = Success / True
-
-This strays away from the traditional C-standard since the boolean-int equivalent in JS is 0 = false and 1 = true. 
-This allows easy checks via if(status){}
+**{status:boolean, message:{}}**
 
 Responses are created by calling:
 
-- errorFunc("fail","message") 
+- create(true,"message");
 
-- errorFunc("success","message")
+- create(false,"message");
 
-eg. **{status: true, message: "Successfully saved.", message_array:[], message_object:{}}**
+eg. **{status: true, message: "Successfully saved"}**
 
 ## Updates:
 
-- complete sending of requests in errorSet format.
-- ensure that recievers handle responses correctly.
 
