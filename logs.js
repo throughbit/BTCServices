@@ -1,14 +1,12 @@
-'use strict';
 //-o_O===modules===================================================~|
 var fs = require('fs');
 //-o_O===init======================================================~|
 //-o_O===sign_tx()=================================================~|
-function write_rec_log(status,data){
- const F_PATH = process.env.REC_LOG;
+function receives(status,data){
+ const L_PATH = process.env.DREC_LPATH;
 //status is a bool
 //data is an object or a single txid for fail cases
  const time = new Date().getTime();
-
  var log_separator = "#--------------------------------------------------------------------------------------------------------------- ";
 //--------------------------------------------------------------------
  if(status){
@@ -21,7 +19,7 @@ function write_rec_log(status,data){
    "tx_details": data.tx_details,
   }
 
-  fs.appendFile(`${F_PATH}`,`${JSON.stringify(s_log,null,1)}\n${log_separator}\n`, function(err){
+  fs.appendFile(`${L_PATH}`,`${JSON.stringify(s_log,null,1)}\n${log_separator}\n`, function(err){
    if(err) console.log("Could not write to file: \n", err);
    else console.log("Success written to log.");
   });
@@ -34,7 +32,7 @@ function write_rec_log(status,data){
    "message":`Error in reading receives`,
    "txid": data
   }
-  fs.appendFile(`${F_PATH}`,`${JSON.stringify(f_log,null,1)}\n${log_separator}\n`, function(err){
+  fs.appendFile(`${L_PATH}`,`${JSON.stringify(f_log,null,1)}\n${log_separator}\n`, function(err){
    if(err) console.log("Could not write to file: \n", err);
    else console.log("Fail written to log.");
   });
@@ -42,5 +40,5 @@ function write_rec_log(status,data){
 //--------------------------------------------------------------------
 }
 //-o_O===exports===================================================~|
-module.exports={write_rec_log};
+module.exports={receives};
 //-o_O===fin-======================================================~|
