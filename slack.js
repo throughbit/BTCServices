@@ -6,7 +6,7 @@ HYFERx Project
 //-o_O==========================================================~|
 'use strict';
 //-o_o===modules=================================================|
-var errorSet = require('./errors.js');
+var res_fmt = require('./response_format.js');
 var Slack = require ('slack-node');
 //-o_O===init===================================================~|
 var webhookUri = process.env.Slack_Weburi;
@@ -20,8 +20,16 @@ function update_slack(data,title){
   icon_emoji: ":ghost:",
   text: data
   }, function(err, response) {
-  if (response)  console.log("Slacker says: ", response);
-  if (err) console.log("Slacker says: ", err);
+  if (response){
+   let message=res_fmt.create(true,`Slack response: ${response}`);
+   console.log("Slacker says: ", message);
+   return message;
+  }
+  if (err){
+   let message=res_fmt.create(false,`Slack error: ${err}`);
+   console.log("Slacker says: ", message);
+   return message;
+  }
  });
 }
 //-o_o===exports=====================================================|
