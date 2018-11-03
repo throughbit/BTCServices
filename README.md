@@ -10,7 +10,7 @@ initialize environment variables for:
  - **SERV** : the port on which this interface will run 
  - **W_UPD** : a port for wallet-notify updates
  - **RPC_AUTH** : the local node's rpcuser:rpcpassword encoded in Base64
- - **REC_LOG** : path to receives.log
+ - **DREC_LPATH** : path to receives.log
  
  **Usage**
  
