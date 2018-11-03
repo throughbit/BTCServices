@@ -68,6 +68,7 @@ app.post('/node_update', (req,res)=>{
 function tx_detail(txid){
   return new Promise((resolve,reject)=>{
     try{
+      const server_url = `http://localhost://${process.env.SERV}`;
       req_options.build(`${server_url}/tx_detail_local`,txid)
       .then((options)=>{
         request(options,(error, response, body)=>{
