@@ -3,15 +3,41 @@ Be your own bank!
 
 A basic node interface for BTC forked crypto-networks like DGB, VTC, DOGE etc., to help you manage and access your full-node with greater ease and portability.  
 
-To get up an running:
+Version:0.1.0
+Pre-Production
 
-initialize environment variables for:
+Required Updates:
+>Secure logs:MongoDb to store all requests made and all responses sent out. 
+>Improved error handling: Recon->attempt re-establishing connection<- n times over a t time-interval. 
+time-interval:t is set to provide enough time for the system admin to correct the error. 
+repeated notifications are sent to the admin during t.
+>Improve/further obfuscate authentication keystore. Give him more time to report undetected unauthorized entry.
+
+Initialization:
+```
+environment variables:
  - **NODE** : local node's rpcport 
  - **SERV** : the port on which this interface will run 
  - **W_UPD** : a port for wallet-notify updates
- - **RPC_AUTH** : the local node's rpcuser:rpcpassword encoded in Base64
+ - **RPC_AUTH** : the local node's rpcuser:rpcpassword encoded in Base64 (can be done with any online Base64 Auth-try Postman)
  - **DREC_LPATH** : path to receives.log
  
+To add environment variables in a unix system:
+cd $HOME
+nano .bash_profile
+*export NODE=9090 (eg syntax to add env variable: add to the end of .bash_profile)'
+
+source .bash_profile
+
+If you do not already have pm2: Docs=>http://pm2.keymetrics.io/docs/
+
+npm install pm2@latest -g
+
+cd /path/to/BTCServices
+pm2 start interface.js tx.js --watch
+
+pm2 monit => Success log: Started server on Port ${SERV} ; 
+```
  **Usage**
  
 The primary utility of such an interface is to act as a proxy between a third-party/the public and your local crypto full node. This third party could be a web/mobile app you develop to access your full-node from anywhere in the world.
@@ -97,4 +123,5 @@ eg. **{status: true, message: "Successfully saved"}**
 
 ## Updates:
 
+## Support/Bug Reporting: zenchan@protonmail.com
 
