@@ -7,10 +7,14 @@ Version:0.1.0
 Pre-Production
 
 Required Updates:
+
 >Secure logs:MongoDb to store all requests made and all responses sent out. 
+
 >Improved error handling: Recon->attempt re-establishing connection<- n times over a t time-interval. 
+
 time-interval:t is set to provide enough time for the system admin to correct the error. 
 repeated notifications are sent to the admin during t.
+
 >Improve/further obfuscate authentication keystore. Give him more time to report undetected unauthorized entry.
 
 Initialization:
