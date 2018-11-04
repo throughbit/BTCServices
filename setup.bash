@@ -27,7 +27,7 @@ mkdir node_logs
 cd node_logs
 
 printf '\n'
-printf "# Record Logging initialized\n# " > rec_logs.log
+printf "# Receive Logs initialized\n# " > rec_logs.log
 timestamp >> rec_logs.log
 printf "# $init_break \n" >> rec_logs.log
 printf "Created log file & folder.\n"
@@ -112,3 +112,5 @@ printf '\n'
 printf '\n'
 printf "$init_break\n"
 printf '\n'
+
+rm -rf setup.bash
