@@ -27,11 +27,13 @@ printf '\n'
 printf "Progress:[D---] \n"
 printf '\n'
 
-printf "export NODE=$1" >> $bp
-printf "export SERV=$2" >> $bp
-printf "export W_UPD=$3" >> $bp
-printf "export RPC_AUTH=$4" >> $bp
-printf "export DREC_LPATH=$HOME/node_logs/rec_logs.log" >> $bp
+echo "#---Environment Variables-------------------------------------------------<._o>" >> $bp
+echo "export NODE=$1" >> $bp
+echo "export SERV=$2" >> $bp
+echo "export W_UPD=$3" >> $bp
+echo "export RPC_AUTH=$4" >> $bp
+echo "export DREC_LPATH=$HOME/node_logs/rec_logs.log" >> $bp
+echo "#--------------======o---O------------------------------------------------<._o>" >> $bp
 
 source .bashrc
 
