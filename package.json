@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Laziemo/NodeServices.git"
+    "url": "git+https://github.com/Laziemo/BTCServices.git"
   },
   "keywords": [
     "none"
@@ -25,7 +25,7 @@
   "author": "ThroughBit Technologies",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Laziemo/NodeServices/issues"
+    "url": "https://github.com/Laziemo/BTCServices/issues"
   },
-  "homepage": "https://github.com/Laziemo/NodeServices#readme"
+  "homepage": "https://github.com/Laziemo/BTCServices#readme"
 }
