@@ -19,8 +19,8 @@ repeated notifications are sent to the admin during t.
 
 Initialization:
 
-chmod 700 setup.bash
-./setup.bash <NODE_PORT> <INTERFACE_PORT> <WALLET_UPDATE_PORT> <RPC_AUTH>
+git clone https://github.com/throughbit/BTCServices.git
+./setup.bash
 
  **Usage**
  
