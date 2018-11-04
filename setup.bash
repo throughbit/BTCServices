@@ -7,7 +7,7 @@
 
 #oooo--o--O:-------------------------------------------------------------------
 init_break=oooo--o--O:---------------------------------------------------------
-timestamp=$(date +%T)
+timestamp=date +%s%N | cut -b1-13
 bp="$HOME/.bashrc"
 
 printf '\n'
@@ -89,7 +89,7 @@ printf "$init_break\n"
 printf '\n'
 
 printf '\n'
-printf "If you get an error: logs can be found at $HOME/.pm2/logs/interface-error.\n"
+printf "If you get an error: logs can be found at $HOME/.pm2/logs.\n"
 printf "If you are unable to debug: Please forward your logs to zenchan@protonmail.com\n"
 
 
