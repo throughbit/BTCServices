@@ -11,7 +11,7 @@ init_break=oooo--o--O:---------------------------------------------------------
 bp="$HOME/.bashrc"
 
 timestamp() {
-  $date +"%T"
+  date +"%T"
 }
 
 printf '\n'
