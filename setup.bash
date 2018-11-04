@@ -15,7 +15,7 @@ timestamp() {
 }
 
 printf '\n'
-printf "$init_break \nBTCServices: Initialization \n"
+printf "$init_break \n\nBTCServices: Initialization \n"
 printf '\n'
 
 printf '\n'
