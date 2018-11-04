@@ -20,7 +20,7 @@ mkdir node_logs
 cd node_logs
 
 printf '\n'
-printf "# Record Logging initialized\n# $timestamp\n# $init_break\n" > $HOME/node_logs/rec_logs.log
+printf "# Record Logging initialized\n# $timestamp\n# $init_break\n" > rec_logs.log
 printf "Set up log file & folder.\n"
 printf "Side-effects: ../node_logs/rec_logs.log \n"
 printf '\n'
