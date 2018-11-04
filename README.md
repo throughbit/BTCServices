@@ -19,7 +19,8 @@ repeated notifications are sent to the admin during t.
 
 Initialization:
 
-./setup.bash
+chmod 700 setup.bash
+./setup.bash <NODE_PORT> <INTERFACE_PORT> <WALLET_UPDATE_PORT> <RPC_AUTH>
 
  **Usage**
  
