@@ -10,10 +10,12 @@ init_break=oooo--o--O:---------------------------------------------------------
 timestamp=$(date +%T)
 bp="$HOME/.bashrc"
 
-printf '$init_break\nBTCServices: Initialization \n'
-printf 'Hop off court and chill for a bit... \n'
-printf 'Will keep you updated on progress... \n'
+printf "$init_break \nBTCServices: Initialization \n"
+printf '\n'
+
+printf '\n'
 printf 'Progress:[------] \n'
+printf '\n'
 
 cd ..
 mkdir node_logs
@@ -23,8 +25,6 @@ printf '\n'
 printf "# Record Logging initialized\n# $timestamp\n# $init_break\n" > rec_logs.log
 printf "Set up log file & folder.\n"
 printf "Side-effects: ../node_logs/rec_logs.log \n"
-printf '\n'
-printf "Progress:[D---] \n"
 printf '\n'
 
 echo "#---Environment Variables-------------------------------------------------<._o>" >> $bp
@@ -40,7 +40,8 @@ source $HOME/.bashrc
 printf '\n'
 printf 'Created environment variables.\n'
 printf 'Side-effects: $HOME/.bashrc \n';
-printf 'Progress:[DO--] \n'
+printf '\n'
+printf "Progress:[D---] \n"
 printf '\n'
 
 cd ..
@@ -50,7 +51,8 @@ npm install pm2
 printf '\n'
 printf "PM2 installed."
 printf "Side-effects: $HOME/.pm2"
-printf 'Progress:[DON-] \n'
+printf '\n'
+printf 'Progress:[DO--] \n'
 printf '\n'
 
 npm install
@@ -58,7 +60,7 @@ npm install
 printf '\n'
 printf 'Installed required npm dependency modules.\n'
 printf 'Side-effects:$HOME/BTCServices/node_modules \n';
-printf 'Progress:[DONE] \n'
+printf 'Progress:[DON-] \n'
 printf '\n'
 
 pm2 start interface.js tx.js --watch
@@ -66,8 +68,6 @@ pm2 start interface.js tx.js --watch
 printf '\n'
 printf "$init_break\nServers Initialized!\n$init_break\n"
 printf '\n'
-
-pm2 start interface.js tx.js --watch
 
 printf '\n'
 printf "Module:interface\n"
@@ -94,5 +94,7 @@ printf '\n'
 printf '\n'
 printf "Use pm2 monit for live monitoring.\n"
 printf "You have been served by lm0-chan on $timestamp.\n"
+printf '\n'
+printf 'Progress:[DONE] \n'
 printf "$init_break\n"
 printf '\n'
