@@ -12,7 +12,6 @@ function build (destination,_params,_id,_method){
   return new Promise((resolve,reject)=>{
     try{
       const NODE_PORT = process.env.NODE;
-      const INTERFACE = process.env.NI_PORT;
       const RPC_AUTH = process.env.RPC_AUTH;
       const nodeurl = `http://localhost:${NODE_PORT}`;
       
