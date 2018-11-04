@@ -11,7 +11,7 @@ init_break=oooo--o--O:---------------------------------------------------------
 bp="$HOME/.bashrc"
 
 timestamp() {
-  date +"%T"
+  $date +"%T"
 }
 
 printf '\n'
@@ -74,7 +74,7 @@ printf '\n'
 printf "$init_break\nServers Initialized!\n$init_break\n"
 printf '\n'
 
-printf '\n'
+
 printf "Module:interface\n"
 printf "Status:\n"
 tail -10 $HOME/.pm2/logs/interface-error.log
@@ -83,7 +83,7 @@ printf '\n'
 printf "$init_break\n"
 printf '\n'
 
-printf '\n'
+
 printf "Module:tx\n"
 printf "Status:\n"
 tail -10 $HOME/.pm2/logs/tx-error.log
