@@ -91,15 +91,17 @@ printf '\n'
 printf '\n'
 printf "If you get an error: logs can be found at $HOME/.pm2/logs/interface-error.\n"
 printf "If you are unable to debug: Please forward your logs to zenchan@protonmail.com\n"
+
+
+printf "Use pm2 monit for live monitoring.\n"
 printf '\n'
 printf "$init_break\n"
 printf '\n'
 
 printf '\n'
-printf "Use pm2 monit for live monitoring.\n"
+printf 'Progress:[DONE] \n'
 printf "You have been served by lm0-chan on $timestamp.\n"
 printf '\n'
-printf 'Progress:[DONE] \n'
 printf '\n'
 printf "$init_break\n"
 printf '\n'
