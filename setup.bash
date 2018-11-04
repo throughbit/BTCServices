@@ -56,7 +56,7 @@ printf '\n'
 printf "PM2 installed."
 printf "Side-effects: $HOME/.pm2"
 printf '\n'
-printf 'Progress:[DO--] \n'
+printf "$init_break Progress:[DO--] \n'
 printf '\n'
 
 npm install
@@ -102,12 +102,10 @@ printf "$init_break\n"
 printf '\n'
 
 printf '\n'
-printf 'Progress:[DONE] \n'
 printf "You have been served by lm0-chan.\n"
 timestamp
+printf "$init_break Progress:[DONE] \n"
 printf '\n'
 printf '\n'
-printf "$init_break\n"
-printf '\n'
-
 rm -rf setup.bash
+
