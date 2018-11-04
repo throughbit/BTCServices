@@ -6,9 +6,13 @@
 #$4=RPC Auth encoded in Base64
 
 #oooo--o--O:-------------------------------------------------------------------
+
 init_break=oooo--o--O:---------------------------------------------------------
-timestamp=date +%s%N | cut -b1-13
 bp="$HOME/.bashrc"
+
+timestamp() {
+  date +"%T"
+}
 
 printf '\n'
 printf "$init_break \nBTCServices: Initialization \n"
