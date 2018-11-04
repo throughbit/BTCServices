@@ -56,7 +56,7 @@ printf '\n'
 printf "PM2 installed."
 printf "Side-effects: $HOME/.pm2"
 printf '\n'
-printf "$init_break Progress:[DO--] \n'
+printf "$init_break Progress:[DO--] \n"
 printf '\n'
 
 npm install
