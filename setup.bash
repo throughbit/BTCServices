@@ -35,7 +35,7 @@ echo "export RPC_AUTH=$4" >> $bp
 echo "export DREC_LPATH=$HOME/node_logs/rec_logs.log" >> $bp
 echo "#--------------======o---O------------------------------------------------<._o>" >> $bp
 
-source .bashrc
+source $HOME/.bashrc
 
 printf '\n'
 printf 'Created environment variables.\n'
