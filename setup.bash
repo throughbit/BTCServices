@@ -104,7 +104,8 @@ printf '\n'
 
 printf '\n'
 printf 'Progress:[DONE] \n'
-printf "You have been served by lm0-chan on $timestamp.\n"
+printf "You have been served by lm0-chan.\n"
+timestamp
 printf '\n'
 printf '\n'
 printf "$init_break\n"
