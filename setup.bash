@@ -15,12 +15,9 @@ timestamp() {
 }
 
 printf '\n'
-printf "$init_break \n\nBTCServices: Initialization \n"
+printf "$init_break Progress:[----]\n\nBTCServices: Initialization \n"
 printf '\n'
 
-printf '\n'
-printf 'Progress:[------] \n'
-printf '\n'
 
 cd ..
 mkdir node_logs
@@ -48,7 +45,7 @@ printf '\n'
 printf 'Defined environment variables.\n'
 printf 'Side-effects: $HOME/.bashrc \n';
 printf '\n'
-printf "Progress:[D---] \n"
+printf "$init_break Progress:[D---]\n"
 printf '\n'
 
 cd ..
@@ -67,7 +64,7 @@ npm install
 printf '\n'
 printf 'Installed required npm dependency modules.\n'
 printf 'Side-effects:$HOME/BTCServices/node_modules \n';
-printf 'Progress:[DON-] \n'
+printf "$init_break Progress:[DON-]\n"
 printf '\n'
 
 pm2 start interface.js tx.js --watch
