@@ -10,6 +10,7 @@ init_break=oooo--o--O:---------------------------------------------------------
 timestamp=$(date +%T)
 bp="$HOME/.bashrc"
 
+printf '\n'
 printf "$init_break \nBTCServices: Initialization \n"
 printf '\n'
 
@@ -74,6 +75,7 @@ printf "Module:interface\n"
 printf "Status:\n"
 tail -10 $HOME/.pm2/logs/interface-error.log
 tail -1 $HOME/.pm2/logs/interface-out.log
+printf '\n'
 printf "$init_break\n"
 printf '\n'
 
@@ -82,12 +84,14 @@ printf "Module:tx\n"
 printf "Status:\n"
 tail -10 $HOME/.pm2/logs/tx-error.log
 tail -1 $HOME/.pm2/logs/tx-out.log
+printf '\n'
 printf "$init_break\n"
 printf '\n'
 
 printf '\n'
 printf "If you get an error: logs can be found at $HOME/.pm2/logs/interface-error.\n"
 printf "If you are unable to debug: Please forward your logs to zenchan@protonmail.com\n"
+printf '\n'
 printf "$init_break\n"
 printf '\n'
 
@@ -96,5 +100,6 @@ printf "Use pm2 monit for live monitoring.\n"
 printf "You have been served by lm0-chan on $timestamp.\n"
 printf '\n'
 printf 'Progress:[DONE] \n'
+printf '\n'
 printf "$init_break\n"
 printf '\n'
