@@ -6,11 +6,11 @@ Tx Parser: used in conjunction with wallet-notify
 //-o_O==========================================================~|
 'use strict';
 //-o_o===modules=================================================|
-const res_fmt = require('./response_format.js');
-const slack = require('./slack.js');
-const logs = require('./logs.js');
-const req_options = require('./options.js');
-const errors = require('./handle_errors.js');
+const res_fmt = require('./lib/response_format.js');
+const slack = require('./lib/slack.js');
+const logs = require('./lib/logs.js');
+const req_options = require('./lib/options.js');
+const errors = require('./lib/handle_errors.js');
 
 const request = require('request');
 const express = require('express');

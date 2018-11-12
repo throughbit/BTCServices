@@ -11,10 +11,10 @@ Requires:
 //-<..>===============================================================~|
 'use strict';
 //-o_o===modules=======================================================|
-const res_fmt = require('./response_format.js');
-const req_options = require('./options.js');
-const node_request = require('./node_request.js');
-const errors = require('./handle_errors.js');
+const res_fmt = require('./lib/response_format.js');
+const req_options = require('./lib/options.js');
+const node_request = require('./lib/node_request.js');
+const errors = require('./lib/handle_errors.js');
 
 const express = require('express');
 const helmet = require('helmet');
