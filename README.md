@@ -20,6 +20,7 @@ repeated notifications are sent to the admin during t.
 Initialization:
 
 git clone https://github.com/throughbit/BTCServices.git
+
 ./setup.bash (alternatively setup your environment variables manually)
 
  **Usage**
@@ -93,11 +94,11 @@ Defines a format for options to pass in requests.
 
 Primarily used by interface.js to make requests to the local node. Can also be used by clients to interface.js.
 
-## logs.js
+## /lib/logs.js
 
 Logs the result of receive_monitor.js locally. 
 
-## slack.js
+## /lib/slack.js
 
 General purpose slack notifier. Takes two arguments: *(data,title)*:
 
@@ -107,7 +108,7 @@ General purpose slack notifier. Takes two arguments: *(data,title)*:
 
 Set environement variable Slack_Weburi to attack your own Slack Webhook.
 
-## response_format.js
+## /lib/response_format.js
 
 Defines a format for passing responses. All responses follow the format: 
 
@@ -121,7 +122,7 @@ Responses are created by calling:
 
 eg. **{status: true, message: "Successfully saved"}**
 
-## handle_errors.js
+## /lib/handle_errors.js
 
 Defines all possible errors and creates error objects that display the entire stack trace to allow ease of debugging. 
 
