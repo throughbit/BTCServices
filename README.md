@@ -17,9 +17,9 @@ repeated notifications are sent to the admin during t.
 
 >Improve/further obfuscate authentication keystore. Give him more time to report undetected unauthorized entry.
 
-Initialization:
+**Initialization**
 
-git clone https://github.com/throughbit/BTCServices.git
+git clone https://github.com/BTCServices.git
 
 ./setup.bash (alternatively setup your environment variables manually)
 
@@ -131,7 +131,7 @@ Defines all possible errors and creates error objects that display the entire st
 - Receive Logs currenly write on every confirmation (upgrade to only write after 1 confirmation)
 - Currently errors get passed all the way up to the response to client. This should change to be logged just before the response and client only receives an error code. 
 
-## Security Notes:
+### Security Notes:
 All sensitive variables are stored as environment variables. 
 Further obfuscate based on your levels of paranoia.
 
