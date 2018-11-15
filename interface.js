@@ -5,8 +5,6 @@ HYFERx Project
 Requires:
 -Input checks:
 -Review of error handling
--Review of aync behaviour
-
 */
 //-<..>===============================================================~|
 'use strict';
@@ -31,8 +29,11 @@ app.use(bodyParser.urlencoded({extended:true}));
 //-o_o===listunspent===================================================|
 app.post('/get_utxo',(req,res)=>{
   try{
-   // console.log(req.body.addresses)
-    req_options.build("node",[2,999999,req.body.addresses],"GetUtxo","listunspent")
+    //console.log(req.body.addresses.split(","));
+    let _params = [2,999999,[]];
+    _params[2] = req.body.addresses.split(",");
+    //console.log(_params);
+    req_options.build("node",_params,"GetUtxo","listunspent")
     .then((options)=>{
      // console.log(options);
       node_request.req(options,"/get_utxo")
@@ -40,6 +41,9 @@ app.post('/get_utxo',(req,res)=>{
         let response = res_fmt.create(true,resp.message);
        // console.log("Successful response from /get_utxo node_request", response);
         res.send(response);
+      })
+      .catch((e)=>{
+        res.send(errors.handle(e));
       });
     })
     .catch((e)=>{
@@ -60,6 +64,9 @@ app.post('/new_address',(req,res)=>{
         let response = res_fmt.create("success",resp.message);
         //console.log("Successful response from /new_address node_request");
         res.send(response);
+      })//established that every promise requires a catch
+      .catch((e)=>{
+        res.send(errors.handle(e));
       });
     })
     .catch((e)=>{
@@ -80,6 +87,9 @@ app.post('/validate_address',(req,res)=>{
         let response = res_fmt.create("success",resp.message);
         //console.log("Successful response from /validate_address node_request");
         res.send(response);
+      })
+      .catch((e)=>{
+        res.send(errors.handle(e));
       });
     })
     .catch((e)=>{
@@ -101,6 +111,9 @@ app.post('/tx_detail_local',(req,res)=>{
         let response = res_fmt.create("success",resp.message);
         //console.log("Successful response from /tx_detail_local node_request");
         res.send(response);
+      })
+      .catch((e)=>{
+        res.send(errors.handle(e));
       });
     })
     .catch((e)=>{
@@ -125,7 +138,13 @@ app.post('/tx_detail_global',(req,res)=>{
           let response = res_fmt.create("success",resp.message);
           //console.log("Successful response from /tx_detail_global node_request");
           res.send(response);
+        })
+        .catch((e)=>{
+          res.send(errors.handle(e));
         });
+      })
+      .catch((e)=>{
+        res.send(errors.handle(e));
       });
     })
     .catch((e)=>{
@@ -147,6 +166,9 @@ function raw_tx(txid){
           let response = res_fmt.create("success",resp.message);
           //console.log("Successful response from raw_tx node_request");
           resolve(response);
+        })
+        .catch((e)=>{
+          res.send(errors.handle(e));
         });
       })
       .catch((e)=>{
@@ -168,6 +190,9 @@ app.post('/broadcastx',(req,res)=>{
         let response = res_fmt.create("success",resp.message);
         //console.log("Successful response from /broadcastx node_request");
         res.send(response);
+      })
+      .catch((e)=>{
+        res.send(errors.handle(e));
       });
     })
     .catch((e)=>{
@@ -189,6 +214,9 @@ app.post('/import_address', async (req,res)=>{
         let response = res_fmt.create("success",resp.message);
         //console.log("Successful response from /import_address node_request");
         res.send(response);
+      })
+      .catch((e)=>{
+        res.send(errors.handle(e));
       });
     })
     .catch((e)=>{
@@ -209,6 +237,9 @@ app.post('/get_balance',(req,res)=>{
         let response = res_fmt.create("success",resp.message);
         //console.log("Successful response from /get_balance node_request");
         res.send(response);
+      })
+      .catch((e)=>{
+        res.send(errors.handle(e));
       });
     })
     .catch((e)=>{

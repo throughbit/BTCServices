@@ -43,7 +43,7 @@ app.post('/node_update', (req,res)=>{
    //console.log("Tx_details, fetched and parsed: \n",data.receives);
    //This is the parsed response that can be redirected to suite your application
    if(data.tx_details){
-    let response = res_fmt.write(true,data);
+    let response = res_fmt.create(true,data);
     //console.log("here?",response);
     logs.receives(true, data);
     slack.update_slack(JSON.stringify(data),'Receive Notifier');
@@ -51,8 +51,8 @@ app.post('/node_update', (req,res)=>{
     res.send(response);
    }
    else {
-    let response =  res_fmt.write(false, "Txid Has no wallet receives.");
-    console.log("Receives came back  empty at  /node-update",response);
+    let response =  res_fmt.create(false, "Txid Has no wallet receives.");
+    console.log("Receives came back  empty at  /node_update",response);
     res.send(response);
    }
   })
@@ -68,8 +68,9 @@ app.post('/node_update', (req,res)=>{
 function tx_detail(txid){
   return new Promise((resolve,reject)=>{
     try{
-      const server_url = `http://localhost://${process.env.SERV}`;
-      req_options.build(`${server_url}/tx_detail_local`,txid)
+      const tx_endpoint = `http://localhost:${process.env.SERV}/tx_detail_local`;
+      const _body = {"txid": txid};
+      req_options.build(`${tx_endpoint}`,_body)
       .then((options)=>{
         request(options,(error, response, body)=>{
           if(error){
