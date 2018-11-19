@@ -109,13 +109,13 @@ function tx_parse(data){
       }
       rec_set.txid = data.txid;
       rec_set.confirmations = data.confirmations;
-      console.log("The data to parse: ", data.details);
+      console.log("The data to parse: ", data);
       rec_set.tx_details = data.details.map(async function(obj){
-      //if(obj.category==='receive'){ //remove this to also notify about sends
-      //console.log(obj.address);
-        return ({"category": obj.category, "address":obj.address, "amount":obj.amount});
-      //return (receives);
-      //}
+        if(obj.category==='receive'){ //remove this to also notify about sends
+        //console.log(obj.address);
+          return ({"category": obj.category, "address":obj.address, "amount":obj.amount});
+        //return (receives);
+        }
       });
 
       await Promise.all(rec_set.tx_details)

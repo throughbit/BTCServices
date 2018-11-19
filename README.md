@@ -21,7 +21,7 @@ repeated notifications are sent to the admin during t.
 
 git clone https://github.com/BTCServices.git
 
-./setup.bash (alternatively setup your environment variables manually)
+./setup.bash <NODEPORT> <INTERFACEPORT> <WALLETUPDATEPORT> <RPCAUTH:Base64Encoded> (alternatively setup your environment variables manually)
 
  **Usage**
  

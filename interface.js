@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 //-o_o===listunspent===================================================|
 app.post('/get_utxo',(req,res)=>{
   try{
-    //console.log(req.body.addresses.split(","));
+    console.log(req.body.addresses.split(","));
     let _params = [2,999999,[]];
     _params[2] = req.body.addresses.split(",");
     //console.log(_params);
@@ -236,6 +236,35 @@ app.post('/get_balance',(req,res)=>{
       .then((resp)=>{
         let response = res_fmt.create("success",resp.message);
         //console.log("Successful response from /get_balance node_request");
+        res.send(response);
+      })
+      .catch((e)=>{
+        res.send(errors.handle(e));
+      });
+    })
+    .catch((e)=>{
+      res.send(errors.handle(e));
+    });
+  }
+  catch(e){
+    res.send(errors.handle(e));
+  }
+});
+//-o_o===listunspent===================================================|
+app.post('/create_multisig',(req,res)=>{
+  try{
+    console.log(req.body.n)
+    let _params = [0,[]];
+    _params[0] = parseInt(req.body.n);
+    _params[1] = req.body.pubkeys.split(",");
+    console.log(_params);
+    req_options.build("node",_params,"CreateMultiSig","createmultisig")
+    .then((options)=>{
+     // console.log(options);
+      node_request.req(options,"/create_multisig")
+      .then(resp=>{
+        let response = res_fmt.create(true,resp.message);
+       // console.log("Successful response from /get_utxo node_request", response);
         res.send(response);
       })
       .catch((e)=>{
