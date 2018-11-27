@@ -1,10 +1,8 @@
 /*
-Node Server
+Digibyte Node Interface
+
 Developed at ThroughBit Technologies Pvt. Ltd.
 HYFERx Project
-Requires:
--Input checks:
--Review of error handling
 */
 //-<..>===============================================================~|
 'use strict';
@@ -20,7 +18,7 @@ const bodyParser = require('body-parser');
 //-o_o===init==========================================================|
 const S_PORT = process.env.SERV;
 
-var app = express();
+let app = express();
 app.use(helmet());
 app.use(helmet.noCache());
 app.use(bodyParser.json());
@@ -156,7 +154,7 @@ app.post('/tx_detail_global',(req,res)=>{
   }
 });
 //-o_o===GetRawTx--====================================================|
-function raw_tx(txid){
+let raw_tx = (txid) => {
   return new Promise((resolve,reject)=>{
     try{
       req_options.build("node",[txid],"GetRawTx","getrawtransaction")
@@ -250,7 +248,7 @@ app.post('/get_balance',(req,res)=>{
     res.send(errors.handle(e));
   }
 });
-//-o_o===listunspent===================================================|
+//-o_o===create_multisig===============================================|
 app.post('/create_multisig',(req,res)=>{
   try{
     console.log(req.body.n)
@@ -267,6 +265,29 @@ app.post('/create_multisig',(req,res)=>{
        // console.log("Successful response from /get_utxo node_request", response);
         res.send(response);
       })
+      .catch((e)=>{
+        res.send(errors.handle(e));
+      });
+    })
+    .catch((e)=>{
+      res.send(errors.handle(e));
+    });
+  }
+  catch(e){
+    res.send(errors.handle(e));
+  }
+});
+//-o_o===getnewaddress=================================================|
+app.post('/network_info',(req,res)=>{
+  try{
+    req_options.build("node",[],"GetFee","getnetworkinfo")
+    .then((options)=>{
+      node_request.req(options,"/get_fee")
+      .then((resp)=>{
+        let response = res_fmt.create("success",resp.message);
+        //console.log("Successful response from /new_address node_request");
+        res.send(response);
+      })//established that every promise requires a catch
       .catch((e)=>{
         res.send(errors.handle(e));
       });

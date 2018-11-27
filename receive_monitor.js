@@ -1,7 +1,12 @@
 /*
+Receive Monitor
+
 Developed at ThroughBit Technologies Pvt.Ltd
 HYFERx Project
-Tx Parser: used in conjunction with wallet-notify
+
+Updates: 
+MongoDb to store all recieves upto 10 confirmations
+Currently assumes 1 address per txid
 */
 //-o_O==========================================================~|
 'use strict';
@@ -12,18 +17,17 @@ const logs = require('./lib/logs.js');
 const req_options = require('./lib/options.js');
 const errors = require('./lib/handle_errors.js');
 
+
 const request = require('request');
 const express = require('express');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
+
 //-o_O===init===================================================~|
 //Server created to respond to wallet_notify
 const UPD_PORT = process.env.W_UPD;
-//NodeServer: called to aquire tx_detail
 
-//Path to log file
-
-var app = express();
+let app = express();
 
 app.use(helmet());
 app.use(helmet.noCache());
@@ -46,13 +50,13 @@ app.post('/node_update', (req,res)=>{
     let response = res_fmt.create(true,data);
     //console.log("here?",response);
     logs.receives(true, data);
-    slack.update_slack(JSON.stringify(data),'Receive Notifier');
+    slack.update(JSON.stringify(data),'Receive Notifier');
     //notify orderbook
     res.send(response);
    }
    else {
-    let response =  res_fmt.create(false, "Txid Has no wallet receives.");
-    console.log("Receives came back  empty at  /node_update",response);
+    let response =  res_fmt.create(false, "TxId has no wallet receives.");
+    console.log("Receives came back  empty at /node_update",response);
     res.send(response);
    }
   })
@@ -65,12 +69,12 @@ app.post('/node_update', (req,res)=>{
  }
 });
 //-o_o===tx-detail================================================|
-function tx_detail(txid){
+let tx_detail=(txid)=>{
   return new Promise((resolve,reject)=>{
     try{
       const tx_endpoint = `http://localhost:${process.env.SERV}/tx_detail_local`;
       const _body = {"txid": txid};
-      req_options.build(`${tx_endpoint}`,_body)
+      req_options.build(tx_endpoint,_body)
       .then((options)=>{
         request(options,(error, response, body)=>{
           if(error){
@@ -99,10 +103,10 @@ function tx_detail(txid){
   });
 }
 //-o_o===tx-parse================================================|
-function tx_parse(data){
+let tx_parse=(data)=>{
   return new Promise(async (resolve,reject)=>{
     try{
-      var rec_set = {
+      let rec_set = {
         "txid":'',
         "confirmations":'',
         "tx_details":[]
