@@ -82,7 +82,8 @@ let tx_detail=(txid)=>{
           }
         //console.log(body);
           if(body.status){
-            tx_parse(body.message)
+            console.log(`Tx_detail request body:\n${body.message.result}`);
+            tx_parse(body.message.result)
             .then(responso=>{
             //console.log("Responso back from tx_parse.\n",responso);
               resolve(responso);

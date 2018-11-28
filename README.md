@@ -131,10 +131,10 @@ Defines all possible errors and creates error objects that display the entire st
 - Receive Logs currenly write on every confirmation (upgrade to only write after 1 confirmation)
 - Currently errors get passed all the way up to the response to client. This should change to be logged just before the response and client only receives an error code. 
 
-### Security Notes:
-All sensitive variables are stored as environment variables. 
-Further obfuscate based on your levels of paranoia.
+### Notes:
 
-**If you have any recommendations on best practices for storing authentication tokens on a server, please leave a message :)**
+All direct requests to the node are read with body.result and/or body.error.
+
+All requests to internal servers are read with body.status and body.message.
 
 ## Support/Bug Reporting: zenchan@protonmail.com

@@ -24,13 +24,14 @@ app.use(helmet.noCache());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
+
 //-o_o===listunspent===================================================|
 app.post('/get_utxo',(req,res)=>{
   try{
-    console.log(req.body.addresses.split(","));
+    //console.log(req.body.addresses.split(","));
     let _params = [2,999999,[]];
-    _params[2] = req.body.addresses.split(",");
-    //console.log(_params);
+    _params[2].push(req.body.addresses);
+    console.log(JSON.stringify(_params));
     req_options.build("node",_params,"GetUtxo","listunspent")
     .then((options)=>{
      // console.log(options);
@@ -282,9 +283,9 @@ app.post('/network_info',(req,res)=>{
   try{
     req_options.build("node",[],"GetFee","getnetworkinfo")
     .then((options)=>{
-      node_request.req(options,"/get_fee")
+      node_request.req(options,"/network_info")
       .then((resp)=>{
-        let response = res_fmt.create("success",resp.message);
+        let response = res_fmt.create(true,resp.message);
         //console.log("Successful response from /new_address node_request");
         res.send(response);
       })//established that every promise requires a catch
