@@ -1,6 +1,6 @@
 {
   "name": "nodeservices",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "Auxillary Services for BTC-like Full Nodes",
   "main": "interface.js",
   "dependencies": {
