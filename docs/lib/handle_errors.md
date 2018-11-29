@@ -1,16 +1,8 @@
 # handle_errors.js
 
-## Dependencies
-
-* response_format.js as *res_fmt*
-
 ## Overview
 
 handle_errors.js is used to organize error handling by listing out all possible error cases in one location.
-
-Returns a response defined by *res_fmt*.
-
-{ status:false, message:<error_details> }
 
 ## Usage
 

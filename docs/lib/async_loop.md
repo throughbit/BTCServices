@@ -25,4 +25,6 @@ In several cases time-consuming processing on data is required before passing co
           });
         },()=>{//Callback fired when tracker===0
           res.send(`${success_counter}/${array_to_iterate_over.length} elements were written to file`)
+          //you can be certain that this response will not go out until
+          //fs.appenFile has been executed for every iteration over array_to_iterate_over
         });

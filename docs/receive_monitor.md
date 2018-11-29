@@ -2,11 +2,11 @@
 
 ## Dependencies
 
-* response_format.js as res_fmt
-* slack.js as slack
-* logs.js as logs
-* options.js as req_options
-* handle_errors.js as errors
+* response_format.js as *res_fmt*
+* slack.js as *slack*
+* logs.js as *logs*
+* options.js as *req_options*
+* handle_errors.js as *errors*
 
 ## Overview
 

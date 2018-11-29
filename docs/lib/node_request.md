@@ -6,9 +6,9 @@ node_request.js is a template for requests made to the local full node.
 
 It takes two parameters:
 
-**options** : created using the options.js module.
+* **options** : created using the options.js module.
 
-**ep_name** : only used for clarity in error logging.
+* **ep_name** : only used for clarity in error logging.
 
 bitcoin-cli JSON-RPC responses are in the format:
 
@@ -26,7 +26,7 @@ and accordingly resolved or rejected.
           reject(body.error);
         }
 
-**Usage**
+## Usage
 
         const node_request = require('node_request.js');
         ...
