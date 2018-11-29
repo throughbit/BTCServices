@@ -1,41 +1,50 @@
 # receive_monitor.js
 
-**Dependencies**
+## Dependencies
 
-1*../lib/response_format.js
-2*../lib/slack.js
-3*../lib/logs.js
-4*../lib/options.js
-5*../lib/handle_errors.js
+* response_format.js as res_fmt
+* slack.js as slack
+* logs.js as logs
+* options.js as req_options
+* handle_errors.js as errors
 
-**Overview**
+## Overview
 
-receive_monitor.js is used in conjunction with bitcoin.conf walletnotify, to notify about receives at the local node. 
-It can also be adjusted to notify all sends from the local node: refer to line 119.
+receive_monitor.js is used in conjunction with bitcoin.conf **walletnotify**, to notify about receives at the local node.
+It can also be adjusted to notify all sends from the local node:
+(lines 118-119)
 
-The server runs at `http://localhost:${process.env.W_UPD}/node_update` and takes {"txid":<txid>} as a request body.
+        rec_set.tx_details = data.details.map(async function(obj){
+        if(obj.category==='receive'){ //remove this conditional to also notify about sends
 
-This txid is passed to this endpoint by a shell-script that is called by wallet-notify and passed a txid as follows:
+The server runs at:
 
-walletnotify=/home/path/to/rec_check.bash %s 
+`http://localhost:${process.env.W_UPD}/node_update`;  and takes {"txid":<txid>} as a request body.
+
+A txid is passed to this endpoint by a shell-script that is called by wallet-notify:
+(digibyte.conf)
+
+        walletnotify=/home/path/to/rec_check.bash %s
 
 For every receive rec_check.bash is executed and %s passes the txid as an argument.
+(rec_check.bash)
 
-rec_check.bash contains the following:
-#!/bin/bash
+        #!/bin/bash
+        curl -X POST "http://localhost:$W_UPD/node_update" -d "txid=$1"
 
-curl -X POST "http://localhost:$W_UPD/node_update" -d "txid=$1"
+The response follows the following format:
 
-The response follows the following format: 
-{
-  "txid":'',
-  "confirmations":'',
-  "tx_details":[]
-}
+        let rec_set = {
+          "txid":'',
+          "confirmations":'',
+          "tx_details":[]
+        }
+
 tx_details is an array of objects which contains the following fields:
-{
-  category: send/receive,
-  address: address_involved,
-  amount: in_btc
-}
-*Note that a single txid can contain multiple transactions.
+(lines 118-123)
+
+        rec_set.tx_details = data.details.map(async (obj)=>{
+          //a single txid can contain multiple incoming transactions. map through it!
+          ...
+          return ({"category": obj.category, "address":obj.address, "amount":obj.amount});
+        }

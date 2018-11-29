@@ -4,7 +4,7 @@ Receive Monitor
 Developed at ThroughBit Technologies Pvt.Ltd
 HYFERx Project
 
-Updates: 
+Updates:
 MongoDb to store all recieves upto 10 confirmations
 Currently assumes 1 address per txid
 */
@@ -115,8 +115,9 @@ let tx_parse=(data)=>{
       rec_set.txid = data.txid;
       rec_set.confirmations = data.confirmations;
       console.log("The data to parse: ", data);
-      rec_set.tx_details = data.details.map(async function(obj){
-        if(obj.category==='receive'){ //remove this to also notify about sends
+      rec_set.tx_details = data.details.map(async (obj)=>{
+        //a single txid can contain multiple incoming transactions. map through it!
+        if(obj.category==='receive'){ //remove this conditional to also notify about sends
         //console.log(obj.address);
           return ({"category": obj.category, "address":obj.address, "amount":obj.amount});
         //return (receives);

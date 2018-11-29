@@ -1,40 +1,42 @@
 # logs.js
 
-**Overview**
+## Overview
 
-logs.js is used to log all receives at the local node. 
+logs.js is used to log all receives at the local node.
 
 Log format is defined by:
 
-Success Format:
+**Success Format:**
 
- const s_log={
-   "time":new Date(unix_timestamp * 1000).format('h:i:s'),
-   "status": "success",
-   "message": "Received Payments.",
-   "txid": data.txid,
-   "confirmations":data.confirmations,
-   "tx_details": data.tx_details,
-  }
+         const s_log={
+           "time":new Date(unix_timestamp * 1000).format('h:i:s'),
+           "status": "success",
+           "message": "Received Payments.",
+           "txid": data.txid,
+           "confirmations":data.confirmations,
+           "tx_details": data.tx_details,
+          }
 
-Failure Format: 
+**Failure Format:**
 
-const f_log={
-   "time":new Date(unix_timestamp * 1000).format('h:i:s'),
-   "status": "fail",
-   "message":`Error in reading receives`,
-   "txid": data
-  }
-  
-**Usage**
+        const f_log={
+           "time":new Date(unix_timestamp * 1000).format('h:i:s'),
+           "status": "fail",
+           "message":`Error in reading receives`,
+           "txid": data
+          }
 
-const logs = require('logs.js');
+## Usage
+
+        const logs = require('logs.js');
+        ...
 
 To log success:
-logs.receives(true,data);
+
+        ...
+        logs.receives(true,data);
 
 To log failure:
-logs.receives(false,data);
 
-
-
+        ...
+        logs.receives(false,data);

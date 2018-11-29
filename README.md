@@ -8,11 +8,14 @@ Pre-Production
 
 Required Updates:
 
->Secure logs:MongoDb to store all requests made and all responses sent out. 
+>Errors should not use res_fmt so they are allowed to freely propogate up.
+Following this every catch block should use errors.handle(e).
 
->Improved error handling: Recon->attempt re-establishing connection<- n times over a t time-interval. 
+>Secure logs:MongoDb to store all requests made and all responses sent out.
 
-time-interval:t is set to provide enough time for the system admin to correct the error. 
+>Improved error handling: Recon->attempt re-establishing connection<- n times over a t time-interval.
+
+time-interval:t is set to provide enough time for the system admin to correct the error.
 repeated notifications are sent to the admin during t.
 
 >Improve/further obfuscate authentication keystore. Give him more time to report undetected unauthorized entry.
@@ -24,12 +27,12 @@ git clone https://github.com/BTCServices.git
 ./setup.bash <NODEPORT> <INTERFACEPORT> <WALLETUPDATEPORT> <RPCAUTH:Base64Encoded> (alternatively setup your environment variables manually)
 
  **Usage**
- 
-The primary utility of such an interface is to act as a proxy between a third-party client application and your local full node. This can be a variety of applications that require full node services. 
+
+The primary utility of such an interface is to act as a proxy between a third-party client application and your local full node. This can be a variety of applications that require full node services.
 
 **This code can easily be used and extended to support more client commands.**
 
-** DO NOT STORE store any coin on this node if being used as a public node. 
+** DO NOT STORE store any coin on this node if being used as a public node.
 It is recommended _not to extend this interface to allow sendtoaddress/sendtomany etc._ as Eve can flood the interface with send requests which will execute as soon as the full node's walletpassphrase is entered.**
 
 Use a offline transaction builder to create transactions and allow the interface to only broadcast a raw transaction hex.
@@ -40,7 +43,7 @@ Use a offline transaction builder to create transactions and allow the interface
 
 In such a scenario even a compromised rpcuser:rpcpassword will hinder Eve from connecting to the local node and attempting to spend.  
 
-It is not recommended to hodl crypto on a public node. Funds received at such nodes must immediately be sent out to a cold wallet. This wallet will include transaction building functions and broadcast signed transactions to the public node. Receives to the public node can be entirely avoided if the wallet-notify function and HD wallet implementation are re-written as part of the cold wallet. This woudl be the most secure crypto-bank set up and the node interface will only serve you in transacting with the network in a trustless manner. 
+It is not recommended to hodl crypto on a public node. Funds received at such nodes must immediately be sent out to a cold wallet. This wallet will include transaction building functions and broadcast signed transactions to the public node. Receives to the public node can be entirely avoided if the wallet-notify function and HD wallet implementation are re-written as part of the cold wallet. This woudl be the most secure crypto-bank set up and the node interface will only serve you in transacting with the network in a trustless manner.
 
 
 
@@ -69,7 +72,7 @@ for the following commands @ given end points:
 
 ## receive_monitor.js
 
-The primary utility of this txparser is to notify the node admin about incoming transactions. 
+The primary utility of this txparser is to notify the node admin about incoming transactions.
 
 Called via walletnotify in bitcoin.conf to parse details of a txid regarding ONLY incoming transactions i.e. receives.
 It can be extended to support notifications for outgoing transactions as well by removing the section commented in the code as //remove this condition to allow send notify.
@@ -96,13 +99,13 @@ Primarily used by interface.js to make requests to the local node. Can also be u
 
 ## /lib/logs.js
 
-Logs the result of receive_monitor.js locally. 
+Logs the result of receive_monitor.js locally.
 
 ## /lib/slack.js
 
 General purpose slack notifier. Takes two arguments: *(data,title)*:
 
--*data* is the message being passed 
+-*data* is the message being passed
 
 -*title* is the name under which the message is passed.
 
@@ -110,7 +113,7 @@ Set environement variable Slack_Weburi to attack your own Slack Webhook.
 
 ## /lib/response_format.js
 
-Defines a format for passing responses. All responses follow the format: 
+Defines a format for passing responses. All responses follow the format:
 
 **{status:boolean, message:{}}**
 
@@ -124,12 +127,12 @@ eg. **{status: true, message: "Successfully saved"}**
 
 ## /lib/handle_errors.js
 
-Defines all possible errors and creates error objects that display the entire stack trace to allow ease of debugging. 
+Defines all possible errors and creates error objects that display the entire stack trace to allow ease of debugging.
 
 ## Updates:
 
 - Receive Logs currenly write on every confirmation (upgrade to only write after 1 confirmation)
-- Currently errors get passed all the way up to the response to client. This should change to be logged just before the response and client only receives an error code. 
+- Currently errors get passed all the way up to the response to client. This should change to be logged just before the response and client only receives an error code.
 
 ### Notes:
 

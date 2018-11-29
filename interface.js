@@ -34,7 +34,7 @@ app.post('/get_utxo',(req,res)=>{
     req_options.build("node",_params,"GetUtxo","listunspent")
     .then((options)=>{
       node_request.req(options,"/get_utxo")
-      .then(resp=>{
+      .then((resp)=>{
         res.send(res_fmt.create(true,resp));
       })
       .catch((e)=>{
@@ -76,7 +76,7 @@ app.post('/validate_address',(req,res)=>{
     req_options.build("node",[req.body.address],"ValidateAddress","validateaddress")
     .then((options)=>{
       node_request.req(options,"/validate_address")
-      .then(resp=>{
+      .then((resp)=>{
         res.send(res_fmt.create(true,resp));
       })
       .catch((e)=>{
@@ -98,7 +98,7 @@ app.post('/tx_detail_local',(req,res)=>{
     req_options.build("node",[req.body.txid],"TxDetailLocal",'gettransaction')
     .then((options)=>{
       node_request.req(options,"/tx_detail_local")
-      .then(resp=>{
+      .then((resp)=>{
         res.send(res_fmt.create(true,resp));
       })
       .catch((e)=>{
@@ -149,7 +149,7 @@ let raw_tx = (txid) => {
       req_options.build("node",[txid],"GetRawTx","getrawtransaction")
       .then((options)=>{
         node_request.req(options,"raw_tx")
-        .then(resp=>{
+        .then((resp)=>{
           resolve(resp);
         })
         .catch((e)=>{
@@ -163,7 +163,7 @@ let raw_tx = (txid) => {
     catch(e){
       res.send(errors.handle(e));
     }
-  });  
+  });
 }
 //-o_o===Broadcast=====================================================|
 app.post('/broadcastx',(req,res)=>{
@@ -171,7 +171,7 @@ app.post('/broadcastx',(req,res)=>{
     req_options.build("node",[req.body.hex],"BroadcastTx","sendrawtransaction")
     .then((options)=>{
       node_request.req(options,"/broadcastx")
-      .then(resp=>{
+      .then((resp)=>{
         res.send(res_fmt.create(true,resp));
       })
       .catch((e)=>{
@@ -193,7 +193,7 @@ app.post('/import_address',(req,res)=>{
     .then((options)=>{
       console.log("Processing your request. This will take a few minutes.")
       node_request.req(options,"/import_address")
-      .then(resp=>{
+      .then((resp)=>{
         res.send(res_fmt.create(true,resp));
       })
       .catch((e)=>{
@@ -214,7 +214,7 @@ app.post('/address_receives',(req,res)=>{
     req_options.build("node",[req.body.address],"ReceivedByAddress","getreceivedbyaddress")
     .then((options)=>{
       node_request.req(options,"/address_receives")
-      .then(resp=>{
+      .then((resp)=>{
         res.send(res_fmt.create(true,resp));
       })
       .catch((e)=>{
@@ -260,7 +260,7 @@ app.post('/create_multisig',(req,res)=>{
     req_options.build("node",_params,"CreateMultiSig","createmultisig")
     .then((options)=>{
       node_request.req(options,"/create_multisig")
-      .then(resp=>{
+      .then((resp)=>{
         res.send(res_fmt.create(true,resp));
       })
       .catch((e)=>{

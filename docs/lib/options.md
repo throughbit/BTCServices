@@ -1,28 +1,47 @@
 # options.js
 
-**Overview**
+## Overview
 
-options.js is used to build options to be passed to requests to the local node, or any other destination.
+options.js is used to build a request, then passed as a parameter in requests made
+to the local node, or any other destination url.
 
-**Usage**
+The build() function takes the following parameters:
 
-const req_options = require('options.js');
+For requests made to the local node:
 
-req_options.build("node",_params,_id,_method);
+* **destination** : `http://localhost:${NODE_PORT}`;
 
-_method: method from node-cli
-_id: Use your own name to identify this call
-_params: parameters required by this specific method
+        const nodeurl = `http://localhost:${NODE_PORT}`;
+        ...
+        if(destination==='node'){
+          options.url = nodeurl;
+          ...
 
-If you wish to make a normal request _id & _method are ignored. 
-The full url must be provided as the destination parameter.
-_params will be passed as the request body.
+* **_method** : method from digibyte-cli
+
+* **_id** : use your own name to identify this call
+
+* **_params** : parameters required by this specific method
+
+        options.body.params = _params;
+
+For other general purpose requests:
+
+* **_id & _method** are ignored.
+
+        else {
+          options.url = destination;
+          options.body = _params;
+        }
+
+* **destination** : provide the complete destination url
+
+* **_params** : passed as the entire request body.
 
 
+## Usage
 
-
-
-
-
-
-
+        const req_options = require('options.js');
+        ...
+        let _params = [];
+        req_options.build("node",_params,"GetAddress","getnewaddress");
