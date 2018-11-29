@@ -15,7 +15,7 @@ const res_fmt = require('./lib/response_format.js');
 const slack = require('./lib/slack.js');
 const logs = require('./lib/logs.js');
 const req_options = require('./lib/options.js');
-const errors = require('./lib/handle_errors.js');
+const errors = require('./lib/handle_errors_serialized.js');
 
 
 const request = require('request');
@@ -46,7 +46,7 @@ app.post('/node_update', (req,res)=>{
   .then((data)=>{
    //console.log("Tx_details, fetched and parsed: \n",data.receives);
    //This is the parsed response that can be redirected to suite your application
-   if(data.tx_details){
+   if(data.tx_details && data.tx_detail!==[]){
     let response = res_fmt.create(true,data);
     //console.log("here?",response);
     logs.receives(true, data);
@@ -55,8 +55,8 @@ app.post('/node_update', (req,res)=>{
     res.send(response);
    }
    else {
-    let response =  res_fmt.create(false, "TxId has no wallet receives.");
-    console.log("Receives came back  empty at /node_update",response);
+    let response =  res_fmt.create(false, "TxId returns no details. Check your request!");
+    console.log("Receives came back empty at /node_update",response);
     res.send(response);
    }
   })
@@ -72,7 +72,7 @@ app.post('/node_update', (req,res)=>{
 let tx_detail=(txid)=>{
   return new Promise((resolve,reject)=>{
     try{
-      const tx_endpoint = `http://localhost:${process.env.SERV}/tx_detail_local`;
+      const tx_endpoint = `http://localhost:${process.env.NI_PORT}/tx_detail_local`;
       const _body = {"txid": txid};
       req_options.build(tx_endpoint,_body)
       .then((options)=>{
@@ -82,8 +82,8 @@ let tx_detail=(txid)=>{
           }
         //console.log(body);
           if(body.status){
-            console.log(`Tx_detail request body:\n${body.message.result}`);
-            tx_parse(body.message.result)
+            console.log(`Tx_detail request body:\n${body.message}`);
+            tx_parse(body.message)
             .then(responso=>{
             //console.log("Responso back from tx_parse.\n",responso);
               resolve(responso);

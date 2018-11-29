@@ -10,20 +10,19 @@ HYFERx Project
 const res_fmt = require('./lib/response_format.js');
 const req_options = require('./lib/options.js');
 const node_request = require('./lib/node_request.js');
-const errors = require('./lib/handle_errors.js');
+const errors = require('./lib/handle_errors_serialized.js');
 
 const express = require('express');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 //-o_o===init==========================================================|
-const S_PORT = process.env.SERV;
+const NI_PORT = process.env.NI_PORT;
 
 let app = express();
 app.use(helmet());
 app.use(helmet.noCache());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
-
 
 //-o_o===listunspent===================================================|
 app.post('/get_utxo',(req,res)=>{
@@ -34,12 +33,9 @@ app.post('/get_utxo',(req,res)=>{
     console.log(JSON.stringify(_params));
     req_options.build("node",_params,"GetUtxo","listunspent")
     .then((options)=>{
-     // console.log(options);
       node_request.req(options,"/get_utxo")
       .then(resp=>{
-        let response = res_fmt.create(true,resp.message);
-       // console.log("Successful response from /get_utxo node_request", response);
-        res.send(response);
+        res.send(res_fmt.create(true,resp));
       })
       .catch((e)=>{
         res.send(errors.handle(e));
@@ -60,10 +56,8 @@ app.post('/new_address',(req,res)=>{
     .then((options)=>{
       node_request.req(options,"/new_address")
       .then((resp)=>{
-        let response = res_fmt.create("success",resp.message);
-        //console.log("Successful response from /new_address node_request");
-        res.send(response);
-      })//established that every promise requires a catch
+        res.send(res_fmt.create(true,resp));
+      })
       .catch((e)=>{
         res.send(errors.handle(e));
       });
@@ -83,9 +77,7 @@ app.post('/validate_address',(req,res)=>{
     .then((options)=>{
       node_request.req(options,"/validate_address")
       .then(resp=>{
-        let response = res_fmt.create("success",resp.message);
-        //console.log("Successful response from /validate_address node_request");
-        res.send(response);
+        res.send(res_fmt.create(true,resp));
       })
       .catch((e)=>{
         res.send(errors.handle(e));
@@ -107,9 +99,7 @@ app.post('/tx_detail_local',(req,res)=>{
     .then((options)=>{
       node_request.req(options,"/tx_detail_local")
       .then(resp=>{
-        let response = res_fmt.create("success",resp.message);
-        //console.log("Successful response from /tx_detail_local node_request");
-        res.send(response);
+        res.send(res_fmt.create(true,resp));
       })
       .catch((e)=>{
         res.send(errors.handle(e));
@@ -130,13 +120,11 @@ app.post('/tx_detail_global',(req,res)=>{
     let txid =req.body.txid;
     raw_tx(txid)
     .then((hex)=>{
-      req_options.build("node",[hex.message],"TxDetailGlobal","decoderawtransaction")
+      req_options.build("node",[hex],"TxDetailGlobal","decoderawtransaction")
       .then((options)=>{
         node_request.req(options,"/tx_detail_global")
         .then((resp)=>{
-          let response = res_fmt.create("success",resp.message);
-          //console.log("Successful response from /tx_detail_global node_request");
-          res.send(response);
+          res.send(res_fmt.create(true,resp));
         })
         .catch((e)=>{
           res.send(errors.handle(e));
@@ -162,9 +150,7 @@ let raw_tx = (txid) => {
       .then((options)=>{
         node_request.req(options,"raw_tx")
         .then(resp=>{
-          let response = res_fmt.create("success",resp.message);
-          //console.log("Successful response from raw_tx node_request");
-          resolve(response);
+          resolve(resp);
         })
         .catch((e)=>{
           res.send(errors.handle(e));
@@ -186,9 +172,7 @@ app.post('/broadcastx',(req,res)=>{
     .then((options)=>{
       node_request.req(options,"/broadcastx")
       .then(resp=>{
-        let response = res_fmt.create("success",resp.message);
-        //console.log("Successful response from /broadcastx node_request");
-        res.send(response);
+        res.send(res_fmt.create(true,resp));
       })
       .catch((e)=>{
         res.send(errors.handle(e));
@@ -203,16 +187,35 @@ app.post('/broadcastx',(req,res)=>{
   }
 });
 //-o_o===ImportAddress=================================================|
-app.post('/import_address', async (req,res)=>{
+app.post('/import_address',(req,res)=>{
   try{
     req_options.build("node",[req.body.address],"ImportAddress","importaddress")
     .then((options)=>{
       console.log("Processing your request. This will take a few minutes.")
       node_request.req(options,"/import_address")
       .then(resp=>{
-        let response = res_fmt.create("success",resp.message);
-        //console.log("Successful response from /import_address node_request");
-        res.send(response);
+        res.send(res_fmt.create(true,resp));
+      })
+      .catch((e)=>{
+        res.send(errors.handle(e));
+      });
+    })
+    .catch((e)=>{
+      res.send(errors.handle(e));
+    });
+  }//closingtry
+  catch(e){
+    res.send(errors.handle(e));
+  }
+});
+//-o_o===received_by_address=================================================|
+app.post('/address_receives',(req,res)=>{
+  try{
+    req_options.build("node",[req.body.address],"ReceivedByAddress","getreceivedbyaddress")
+    .then((options)=>{
+      node_request.req(options,"/address_receives")
+      .then(resp=>{
+        res.send(res_fmt.create(true,resp));
       })
       .catch((e)=>{
         res.send(errors.handle(e));
@@ -233,9 +236,7 @@ app.post('/get_balance',(req,res)=>{
     .then((options)=>{
       node_request.req(options,"/get_balance")
       .then((resp)=>{
-        let response = res_fmt.create("success",resp.message);
-        //console.log("Successful response from /get_balance node_request");
-        res.send(response);
+        res.send(res_fmt.create(true,resp));
       })
       .catch((e)=>{
         res.send(errors.handle(e));
@@ -252,19 +253,15 @@ app.post('/get_balance',(req,res)=>{
 //-o_o===create_multisig===============================================|
 app.post('/create_multisig',(req,res)=>{
   try{
-    console.log(req.body.n)
     let _params = [0,[]];
     _params[0] = parseInt(req.body.n);
     _params[1] = req.body.pubkeys.split(",");
     console.log(_params);
     req_options.build("node",_params,"CreateMultiSig","createmultisig")
     .then((options)=>{
-     // console.log(options);
       node_request.req(options,"/create_multisig")
       .then(resp=>{
-        let response = res_fmt.create(true,resp.message);
-       // console.log("Successful response from /get_utxo node_request", response);
-        res.send(response);
+        res.send(res_fmt.create(true,resp));
       })
       .catch((e)=>{
         res.send(errors.handle(e));
@@ -285,10 +282,8 @@ app.post('/network_info',(req,res)=>{
     .then((options)=>{
       node_request.req(options,"/network_info")
       .then((resp)=>{
-        let response = res_fmt.create(true,resp.message);
-        //console.log("Successful response from /new_address node_request");
-        res.send(response);
-      })//established that every promise requires a catch
+        res.send(res_fmt.create(true,resp));
+      })
       .catch((e)=>{
         res.send(errors.handle(e));
       });
@@ -302,7 +297,7 @@ app.post('/network_info',(req,res)=>{
   }
 });
 //-o_o===CONNECT=======================================================|
-app.listen(S_PORT,()=>
-  console.log(`Node Server running on port ${S_PORT}`)
+app.listen(NI_PORT,()=>
+  console.log(`Node Server running on port ${NI_PORT}`)
 );
 //-o_o===fin===========================================================|
