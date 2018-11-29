@@ -10,7 +10,7 @@ HYFERx Project
 const res_fmt = require('./lib/response_format.js');
 const req_options = require('./lib/options.js');
 const node_request = require('./lib/node_request.js');
-const errors = require('./lib/handle_errors_serialized.js');
+const errors = require('./lib/handle_errors.js');
 
 const express = require('express');
 const helmet = require('helmet');
@@ -30,7 +30,7 @@ app.post('/get_utxo',(req,res)=>{
     //console.log(req.body.addresses.split(","));
     let _params = [2,999999,[]];
     _params[2].push(req.body.addresses);
-    console.log(JSON.stringify(_params));
+    //console.log(JSON.stringify(_params));
     req_options.build("node",_params,"GetUtxo","listunspent")
     .then((options)=>{
       node_request.req(options,"/get_utxo")

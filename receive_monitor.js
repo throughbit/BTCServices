@@ -15,7 +15,7 @@ const res_fmt = require('./lib/response_format.js');
 const slack = require('./lib/slack.js');
 const logs = require('./lib/logs.js');
 const req_options = require('./lib/options.js');
-const errors = require('./lib/handle_errors_serialized.js');
+const errors = require('./lib/handle_errors.js');
 
 
 const request = require('request');
